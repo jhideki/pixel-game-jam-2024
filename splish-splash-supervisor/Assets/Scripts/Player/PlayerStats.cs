@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 //TODO: calc/ update player stats based off NPC manager satisfaction score 

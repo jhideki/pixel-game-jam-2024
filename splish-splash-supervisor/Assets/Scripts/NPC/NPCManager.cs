@@ -3,6 +3,19 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+public enum NPCStatus
+{
+    Swimming,
+    Drowning,
+    Shitting,
+    Pissing,
+    Overheating,
+    Running,
+    Idle,
+    Hysteria,
+    Dead,
+}
+
 public class NPCManager : MonoBehaviour
 {
     private List<GameObject> nPCs = new List<GameObject>();
@@ -28,6 +41,15 @@ public class NPCManager : MonoBehaviour
     public void dealSatisfactionDamage(float amount)
     {
         currentSatisfaction -= amount;
+    }
+
+    public void RemoveNPC(GameObject npc)
+    {
+        if (nPCs.Contains(npc))
+        {
+            nPCs.Remove(npc);
+            Destroy(npc);
+        }
     }
 
 }

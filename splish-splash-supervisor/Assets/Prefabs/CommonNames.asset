@@ -12,4 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 578e3314e22bdd84795daddd27e0605f, type: 3}
   m_Name: CommonNames
   m_EditorClassIdentifier: 
-  names: []
+  names:
+  - Kerry perry
+  - Bruce Wang
+  - Lizzo
+  maxHealth: 200
+  minHealth: 100
+  maxSatisfaction: 200
+  minSatisfaction: 100
