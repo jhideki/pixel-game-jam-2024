@@ -28,8 +28,7 @@
 - **Scripts**: Store all C# scripts here.
 - **Scenes**: Store Unity scenes here.
 - **Prefabs**: Store reusable GameObject prefabs here.
-- **Materials**: Store material assets here.
-- **Textures**: Store texture assets here.
+- **Art**: Store art assets here.
 - **Audio**: Store audio assets here.
 
 ### Scripts
