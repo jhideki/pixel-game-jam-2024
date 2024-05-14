@@ -5,12 +5,14 @@ public class PlayerController : MonoBehaviour
     public float speed = 5;
     float speedX, speedY;
     private EventManager eventManager;
+    public MiniGameController miniGameController;
 
     Rigidbody2D rb;
 
     // Start is called before the first frame update
     void Start()
     {
+        miniGameController = GameObject.Find("MiniGameController").GetComponent<MiniGameController>();
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         rb = GetComponent<Rigidbody2D>();
     }
@@ -31,9 +33,8 @@ public class PlayerController : MonoBehaviour
             IEvent e = eventObject.GetEvent();
             if (e.isActive)
             {
-                Debug.Log("Colided with event");
-                //TODO minigame
-                //Create minigame object + class script with function StartMiniGame()
+                // Run minigame
+                miniGameController.StartMiniGame(e);
                 eventManager.EndEvent(collision.gameObject);
             }
         }

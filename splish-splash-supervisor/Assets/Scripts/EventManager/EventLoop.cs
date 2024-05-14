@@ -3,15 +3,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public enum EventType
-{
-    Drowning,
-    Shitting,
-    Pissing,
-    OverHeating,
-    Running,
-    Hysteria,
-}
 //EventLoop class used to spawn events based of probabilities
 //Also used to manage NPC spawning and time tracking
 public class EventLoop : MonoBehaviour

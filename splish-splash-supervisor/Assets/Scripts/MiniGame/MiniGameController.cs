@@ -1,0 +1,62 @@
+using UnityEngine;
+
+public class MiniGameController : MonoBehaviour
+{
+    //Pointer to current game
+    private GameObject currentMiniGameObject;
+    private MiniGame currentMiniGame;
+    private bool isPlaying = false;
+    //Example of how to initialize a minigame based off an event
+    public GameObject drowningMiniGamePrefab;
+    //TODO: Add more minigames prefabs here
+    public void StartMiniGame(IEvent e)
+    {
+        EventType type = e.Type;
+        switch (type)
+        {
+            /*Copy this example for the other mini games. Each mini game prefab must have a script component that initilizes an instance of the MiniGame class and 
+            contains a function called Initialize() that returns type MiniGame*/
+            case EventType.Drowning:
+                //Minigame starts on Start() method. When it is instantiated it will automacally create a coroutine
+                //Maybe change this to spawn the object as a child of the MiniGameController game object
+                currentMiniGameObject = Instantiate(drowningMiniGamePrefab, new Vector3(e.location.x, e.location.y, 0), Quaternion.identity);
+                currentMiniGame = currentMiniGameObject.GetComponent<DrowningMiniGame>().Initialize();
+                break;
+            case EventType.Shitting:
+                //TODO: Initialize Shitting minigame prefab and script component
+                //E.g., 
+                /*currentMiniGameObject = Instantiate(shittingMiniGamePrefab, new Vector3(e.location.x, e.location.y, 0), Quaternion.identity);
+                currentMiniGame = currentMiniGameObject.GetComponent<ShittingMiniGame>().Initialize();
+                */
+                break;
+            case EventType.Pissing:
+                //TODO: Initialize Pissing minigame
+                break;
+
+            //Event does not have a minigame
+            default:
+                break;
+                //TODO: Add more minigames here
+        }
+        //TODO: Initialize minigame based off event type. Event types are listed in Event.cs
+    }
+
+    void Update()
+    {
+        if (currentMiniGame != null)
+        {
+            if (currentMiniGame.GetStatus() == MiniGameStatus.Win)
+            {
+                //TODO: when player wins mingame
+                currentMiniGame.SetStatus(MiniGameStatus.Complete);
+            }
+
+            if (currentMiniGame.GetStatus() == MiniGameStatus.Lose)
+            {
+                //TODO: when player loses minigame
+                currentMiniGame.SetStatus(MiniGameStatus.Complete);
+            }
+        }
+    }
+
+}
