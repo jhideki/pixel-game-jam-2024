@@ -14,6 +14,7 @@ public interface IEvent
     NPC nPC { get; set; }
     bool isActive { get; set; }
     Vector2Int location { get; set; }
+    int Size { get; set; }
 }
 
 public abstract class EventBase : IEvent
@@ -28,12 +29,13 @@ public abstract class EventBase : IEvent
     public float Duration { get; set; }
     public abstract bool isActive { get; set; }
     public Vector2Int location { get; set; }
+    public int Size { get; set; }
 
 }
 
 public class GenericEvent : EventBase
 {
-    public GenericEvent(float startTime, NPC nPC, float duration, int damageRate, EventType type, float satisfactionDropRate)
+    public GenericEvent(float startTime, NPC nPC, float duration, int damageRate, EventType type, float satisfactionDropRate, int size)
     {
         Type = type;
         SatisfactionDropRate = satisfactionDropRate;
@@ -43,14 +45,15 @@ public class GenericEvent : EventBase
         Duration = duration;
         isActive = true;
         location = nPC.GetLocation();
+        Size = size;
+        nPC.SetIsEventOccuring(true);
     }
     public override bool isActive { get; set; }
 }
 
 public class NonNPCEvent : EventBase
 {
-
-    public NonNPCEvent(float startTime, NPC nPC, float duration, int damageRate, EventType type, float satisfactionDropRate, Vector2Int location)
+    public NonNPCEvent(float startTime, NPC nPC, float duration, int damageRate, EventType type, float satisfactionDropRate, Vector2Int location, int size)
     {
         Type = type;
         SatisfactionDropRate = satisfactionDropRate;
@@ -60,6 +63,7 @@ public class NonNPCEvent : EventBase
         Duration = duration;
         isActive = true;
         this.location = location;
+        Size = size;
     }
     public override bool isActive { get; set; }
 }

@@ -43,14 +43,26 @@ public class NPCManager : MonoBehaviour
         foreach (GameObject npc in nPCs)
         {
             NPC n = npc.GetComponent<NPC>();
-            n.IncreaseSatisfaction(eventData.satisfactionIncreaseAmount);
+            if (n.GetSatisfaction() < n.GetMaxSatisfaction())
+            {
+                if (n.GetSatisfaction() + eventData.satisfactionIncreaseAmount < n.GetMaxSatisfaction())
+                {
+                    n.IncreaseSatisfaction(eventData.satisfactionIncreaseAmount);
+                    currentSatisfaction += eventData.satisfactionIncreaseAmount;
+                }
+                else if (eventData.satisfactionIncreaseAmount > n.GetSatisfaction() - n.GetMaxSatisfaction())
+                {
+                    n.IncreaseSatisfaction(eventData.satisfactionIncreaseAmount - (n.GetSatisfaction() - n.GetMaxSatisfaction()));
+                    currentSatisfaction += n.GetSatisfaction() - n.GetMaxSatisfaction();
+                }
+            }
         }
-        currentSatisfaction += eventData.satisfactionIncreaseAmount;
     }
 
     //TDO - add a method to deal damage to all NPCs
-    public void dealSatisfactionDamage(float amount)
+    public void DealSatisfactionDamage(float amount, NPC npc)
     {
+        npc.LowerSatisfaction(amount);
         currentSatisfaction -= amount;
     }
 

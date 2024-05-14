@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using Unity.VisualScripting;
+using System;
 
+//EventManager class used to spawn events keep track of active events
 public class EventManager : MonoBehaviour
 {
     public static EventManager instance;
+    public GameObject eventPrefab;
     public NPCManager npcManager;
-    public List<IEvent> activeEvents = new List<IEvent>();
+    public List<GameObject> activeEvents = new List<GameObject>();
     public EventData eventData;
     private void Awake()
     {
@@ -22,54 +25,36 @@ public class EventManager : MonoBehaviour
 
     }
 
-    public void checkCollisions(Transform player)
+    public void EndEvent(GameObject eventObject)
     {
-        foreach (IEvent e in activeEvents)
-        {
-
-            NPC npc = e.nPC.GetComponent<NPC>();
-            if (e.isActive)
-            {
-                if (player.position.x > e.location.x - eventData.eventRadius && player.position.x < e.location.x + eventData.eventRadius &&
-                    player.position.y > e.location.y - eventData.eventRadius && player.position.y < e.location.y + eventData.eventRadius)
-                {
-                    EndEvent(e);
-                }
-            }
-
-        }
-
-
-    }
-
-    public void EndEvent(IEvent e)
-    {
-        e.isActive = false;
+        eventObject.GetComponent<EventObject>().GetEvent().isActive = false;
     }
 
 
     public void TriggerEvent(IEvent newEvent)
     {
-        activeEvents.Add(newEvent);
-        StartCoroutine(RunEvent(newEvent));
+        GameObject eventObject = Instantiate(eventPrefab, new Vector3(newEvent.location.x, newEvent.location.y, 0), Quaternion.identity);
+        eventObject.GetComponent<EventObject>().SetEvent(newEvent);
+        activeEvents.Add(eventObject);
+        StartCoroutine(RunEvent(eventObject));
     }
 
-    private IEnumerator RunEvent(IEvent newEvent)
+    private IEnumerator RunEvent(GameObject eventObject)
     {
+        IEvent newEvent = eventObject.GetComponent<EventObject>().GetEvent();
         Debug.Log(newEvent.nPC.GetComponent<NPC>().GetName() + " started " + newEvent.Type);
 
         NPC npc = newEvent.nPC.GetComponent<NPC>();
         float elapsedTime = 0f;
-        while (elapsedTime < newEvent.Duration && newEvent.isActive)
+        while (elapsedTime < newEvent.Duration && newEvent.isActive && npc.GetStatus() != NPCStatus.Dead)
         {
             elapsedTime += 1f;
 
             //target NPC associated with event
             npc.DealDamage(newEvent.DamageRate);
-            npc.LowerSatisfaction(newEvent.SatisfactionDropRate);
 
-            //target overall satisfaction
-            npcManager.dealSatisfactionDamage(newEvent.SatisfactionDropRate);
+            //target NPC and Overall satisfaction
+            npcManager.DealSatisfactionDamage(newEvent.SatisfactionDropRate, npc);
 
             //Wait for one second before continuing
             yield return new WaitForSeconds(1f);
@@ -78,7 +63,7 @@ public class EventManager : MonoBehaviour
         Debug.Log("NPC " + newEvent.nPC.GetComponent<NPC>().GetName() + " now has " + newEvent.nPC.GetComponent<NPC>().GetHealth() + "health and " + newEvent.nPC.GetComponent<NPC>().GetSatisfaction() + " satisfaction");
 
         //cleanup
-        activeEvents.Remove(newEvent);
+        activeEvents.Remove(eventObject);
         if (npc.GetStatus() == NPCStatus.Dead)
         {
             npcManager.RemoveNPC(npc.gameObject);

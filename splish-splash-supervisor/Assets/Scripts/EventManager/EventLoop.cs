@@ -12,6 +12,8 @@ public enum EventType
     Running,
     Hysteria,
 }
+//EventLoop class used to spawn events based of probabilities
+//Also used to manage NPC spawning and time tracking
 public class EventLoop : MonoBehaviour
 {
     public Timer timer;
@@ -20,41 +22,50 @@ public class EventLoop : MonoBehaviour
     public EventData eventData;
     private Dictionary<EventType, float> eventProbabilitesDict;
 
-    // Start is called before the first frame update
     void Start()
     {
         eventProbabilitesDict = new Dictionary<EventType, float>();
+
+        //For day cycles and spawning NPCs
         timer.StartTimer();
 
         //Probabilty dictionary
         eventProbabilitesDict.Add(EventType.Drowning, eventData.drowningProbability);
-        eventProbabilitesDict.Add(EventType.Shitting, eventData.shittingProbalilty);
-        eventProbabilitesDict.Add(EventType.Pissing, eventData.pissingProbalility);
+        eventProbabilitesDict.Add(EventType.Shitting, eventData.shittingProbability);
+        eventProbabilitesDict.Add(EventType.Pissing, eventData.pissingProbability);
         eventProbabilitesDict.Add(EventType.Running, eventData.runningProbability);
-        eventProbabilitesDict.Add(EventType.OverHeating, eventData.overHeatingProbabilty);
+        eventProbabilitesDict.Add(EventType.OverHeating, eventData.overHeatingProbability);
         eventProbabilitesDict.Add(EventType.Hysteria, eventData.hysteriaProbability);
 
+        //Will remove this block later (Will be replaced by SpawnNPCs)
         for (int i = 0; i < 10; i++)
         {
             npcManager.Spawn(new Vector2Int(Random.Range(-10, 10), Random.Range(-10, 10)));
         }
+        //End block 
 
         StartCoroutine(RunProbabilites());
-        StartCoroutine(IncreaseSatisfaction());
+        StartCoroutine(ManageSatisfaction());
+    }
+
+    void SpawnNPCs()
+    {
+        //TODO: spawn NPCs based on time of day (use timer and other metrics)
+        // npcManager.Spawn(<SOME_VECTOR2_INT_SPAWN_LOCATION>);
     }
 
     void Update()
     {
-        //TODO: check if player collides with event coords
+        SpawnNPCs();
 
 
     }
 
-    IEnumerator IncreaseSatisfaction()
+    IEnumerator ManageSatisfaction()
     {
         while (true)
         {
-            npcManager.dealSatisfactionDamage(eventData.satisfactionIncreaseAmount);
+            npcManager.IncreaseSatisfaction();
             yield return new WaitForSeconds(eventData.satisfactionIncreaseTime);
         }
     }
@@ -75,23 +86,24 @@ public class EventLoop : MonoBehaviour
             yield return new WaitForSeconds(eventData.reRollRate);
         }
     }
+
     IEvent CreateEvent(EventType type)
     {
         NPC npc = npcManager.GetRandomNPC();
         switch (type)
         {
             case EventType.Drowning:
-                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.drowningDuration, eventData.drowningDamageRate, type, eventData.drowningSatisfactionDropRate);
+                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.drowningDuration, eventData.drowningDamageRate, type, eventData.drowningSatisfactionDropRate, eventData.drowningSize);
             case EventType.Shitting:
-                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.shittingDuration, eventData.shittingDamangeRate, type, eventData.shittingSatisfactionDropRate);
+                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.shittingDuration, eventData.shittingDamageRate, type, eventData.shittingSatisfactionDropRate, eventData.shittingSize);
             case EventType.Pissing:
-                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.pissingDuration, eventData.pissingDamageRate, type, eventData.pissingSatisfactionDropRate);
+                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.pissingDuration, eventData.pissingDamageRate, type, eventData.pissingSatisfactionDropRate, eventData.pissingSize);
             case EventType.Running:
-                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.runningDuration, eventData.runningDamageRate, type, eventData.runningSatisfactionDropRate);
+                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.runningDuration, eventData.runningDamageRate, type, eventData.runningSatisfactionDropRate, eventData.runningSize);
             case EventType.OverHeating:
-                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.overHeatingProbabilty, eventData.overHeatingDamageRate, type, eventData.overHeatingSatisfactionDropRate);
+                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.overHeatingDuration, eventData.overHeatingDamageRate, type, eventData.overHeatingSatisfactionDropRate, eventData.overHeatingSize);
             case EventType.Hysteria:
-                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.hysteriaDuration, eventData.hysteriaDamageRate, type, eventData.hysteriaSatisfactionDropRate);
+                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.hysteriaDuration, eventData.hysteriaDamageRate, type, eventData.hysteriaSatisfactionDropRate, eventData.hysteriaSize);
             default:
                 return null;
         }

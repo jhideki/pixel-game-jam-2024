@@ -9,11 +9,11 @@ public class NPC : MonoBehaviour
     private string name;
     private NPCStatus status;
     private NPCManager npcManager;
-    public BoxCollider2D collider2D;
+    private bool isEventOccuring;
+
 
     void Start()
     {
-        collider2D = GetComponent<BoxCollider2D>();
         npcManager = GameObject.Find("EventManager").GetComponent<NPCManager>();
         name = parameters.names[Random.Range(0, parameters.names.Length)];
         health = Random.Range(parameters.minHealth, parameters.maxHealth);
@@ -30,6 +30,15 @@ public class NPC : MonoBehaviour
         {
             die();
         }
+    }
+
+    public bool GetIsEventOccuring()
+    {
+        return isEventOccuring;
+    }
+    public void SetIsEventOccuring(bool value)
+    {
+        isEventOccuring = value;
     }
     public void LowerSatisfaction(float amount)
     {
@@ -68,6 +77,11 @@ public class NPC : MonoBehaviour
         return satisfaction;
     }
 
+    public float GetMaxSatisfaction()
+    {
+        return startingSatisfaction;
+    }
+
     //We destroy the game object in NPCManager.cs
     void die()
     {
@@ -75,7 +89,7 @@ public class NPC : MonoBehaviour
         SetStatus(NPCStatus.Dead);
     }
 
-    public float calculateSatisfactionPercentage()
+    public float CalculateSatisfactionPercentage()
     {
         return (float)satisfaction / (float)startingSatisfaction;
     }

@@ -76,7 +76,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ae48813f2a015047ac7de185be6a284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventPrefab: {fileID: 4668592122272107493, guid: 19d7c01dac954c7498621521a7bfe0c8, type: 3}
   npcManager: {fileID: 465077081754668518}
+  activeEvents: []
+  eventData: {fileID: 11400000, guid: 794d140ec0060d249ac1c6c089f77c91, type: 2}
 --- !u!114 &465077081754668518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,3 +93,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NPCPrefab: {fileID: 0}
+  eventData: {fileID: 11400000, guid: 794d140ec0060d249ac1c6c089f77c91, type: 2}
