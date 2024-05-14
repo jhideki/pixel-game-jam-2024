@@ -22,6 +22,7 @@ public class NPCManager : MonoBehaviour
     private float startingSatisfaction = 0f;
     private float currentSatisfaction = 0f;
     public GameObject NPCPrefab;
+    public EventData eventData;
 
     public void Spawn(Vector2Int location)
     {
@@ -35,6 +36,16 @@ public class NPCManager : MonoBehaviour
     public NPC GetRandomNPC()
     {
         return nPCs[Random.Range(0, nPCs.Count)].GetComponent<NPC>();
+    }
+
+    public void IncreaseSatisfaction()
+    {
+        foreach (GameObject npc in nPCs)
+        {
+            NPC n = npc.GetComponent<NPC>();
+            n.IncreaseSatisfaction(eventData.satisfactionIncreaseAmount);
+        }
+        currentSatisfaction += eventData.satisfactionIncreaseAmount;
     }
 
     //TDO - add a method to deal damage to all NPCs
