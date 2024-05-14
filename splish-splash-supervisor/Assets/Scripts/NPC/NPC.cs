@@ -2,15 +2,17 @@ using UnityEngine;
 
 public class NPC : MonoBehaviour
 {
-    private Transform transform;
     public NPCParameters parameters;
     private int health;
     private float satisfaction;
     private float startingSatisfaction;
     private string name;
+    private NPCStatus status;
+    private NPCManager npcManager;
 
     void Start()
     {
+        npcManager = GameObject.Find("EventManager").GetComponent<NPCManager>();
         name = parameters.names[Random.Range(0, parameters.names.Length)];
         health = Random.Range(parameters.minHealth, parameters.maxHealth);
         satisfaction = Random.Range(parameters.minSatisfaction, parameters.maxSatisfaction);
@@ -37,6 +39,11 @@ public class NPC : MonoBehaviour
         }
     }
 
+    public void SetStatus(NPCStatus newStatus)
+    {
+        status = newStatus;
+    }
+
     public string GetName()
     {
         return name;
@@ -47,15 +54,21 @@ public class NPC : MonoBehaviour
         return health;
 
     }
+
+    public NPCStatus GetStatus()
+    {
+        return status;
+    }
     public float GetSatisfaction()
     {
         return satisfaction;
     }
 
+    //We destroy the game object in NPCManager.cs
     void die()
     {
         Debug.Log("NPC " + name + " died");
-        Destroy(gameObject);
+        SetStatus(NPCStatus.Dead);
     }
 
     public float calculateSatisfactionPercentage()
@@ -67,6 +80,11 @@ public class NPC : MonoBehaviour
     public void Move(Vector2Int destination)
     {
 
+    }
+
+    public Vector2Int GetLocation()
+    {
+        return new Vector2Int((int)transform.position.x, (int)transform.position.y);
     }
 
     //TODO: Leave (will call Move() to leave pool. Once move is done destroy game object)
