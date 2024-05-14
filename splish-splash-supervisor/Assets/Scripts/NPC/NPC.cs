@@ -9,9 +9,11 @@ public class NPC : MonoBehaviour
     private string name;
     private NPCStatus status;
     private NPCManager npcManager;
+    public BoxCollider2D collider2D;
 
     void Start()
     {
+        collider2D = GetComponent<BoxCollider2D>();
         npcManager = GameObject.Find("EventManager").GetComponent<NPCManager>();
         name = parameters.names[Random.Range(0, parameters.names.Length)];
         health = Random.Range(parameters.minHealth, parameters.maxHealth);
@@ -38,6 +40,8 @@ public class NPC : MonoBehaviour
             Leave();
         }
     }
+
+    public void IncreaseSatisfaction(float amount) { satisfaction += amount; }
 
     public void SetStatus(NPCStatus newStatus)
     {

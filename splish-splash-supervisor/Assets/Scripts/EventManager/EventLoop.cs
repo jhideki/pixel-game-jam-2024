@@ -40,6 +40,23 @@ public class EventLoop : MonoBehaviour
         }
 
         StartCoroutine(RunProbabilites());
+        StartCoroutine(IncreaseSatisfaction());
+    }
+
+    void Update()
+    {
+        //TODO: check if player collides with event coords
+
+
+    }
+
+    IEnumerator IncreaseSatisfaction()
+    {
+        while (true)
+        {
+            npcManager.dealSatisfactionDamage(eventData.satisfactionIncreaseAmount);
+            yield return new WaitForSeconds(eventData.satisfactionIncreaseTime);
+        }
     }
 
     IEnumerator RunProbabilites()

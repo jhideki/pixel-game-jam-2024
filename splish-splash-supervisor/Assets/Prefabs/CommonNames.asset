@@ -13,9 +13,15 @@ MonoBehaviour:
   m_Name: CommonNames
   m_EditorClassIdentifier: 
   names:
-  - Kerry perry
-  - Bruce Wang
+  - Karen
+  - Bruce
   - Lizzo
+  - De Moivre
+  - Drake
+  - Kyunjie
+  - Mr. Dover
+  - Lana
+  - Mia
   maxHealth: 200
   minHealth: 100
   maxSatisfaction: 200

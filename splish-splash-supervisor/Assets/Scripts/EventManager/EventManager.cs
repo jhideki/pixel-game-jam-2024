@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using Unity.VisualScripting;
 
 public class EventManager : MonoBehaviour
 {
     public static EventManager instance;
     public NPCManager npcManager;
-    private List<IEvent> activeEvents = new List<IEvent>();
+    public List<IEvent> activeEvents = new List<IEvent>();
+    public EventData eventData;
     private void Awake()
     {
         if (instance == null)
@@ -19,6 +21,32 @@ public class EventManager : MonoBehaviour
         }
 
     }
+
+    public void checkCollisions(Transform player)
+    {
+        foreach (IEvent e in activeEvents)
+        {
+
+            NPC npc = e.nPC.GetComponent<NPC>();
+            if (e.isActive)
+            {
+                if (player.position.x > e.location.x - eventData.eventRadius && player.position.x < e.location.x + eventData.eventRadius &&
+                    player.position.y > e.location.y - eventData.eventRadius && player.position.y < e.location.y + eventData.eventRadius)
+                {
+                    EndEvent(e);
+                }
+            }
+
+        }
+
+
+    }
+
+    public void EndEvent(IEvent e)
+    {
+        e.isActive = false;
+    }
+
 
     public void TriggerEvent(IEvent newEvent)
     {

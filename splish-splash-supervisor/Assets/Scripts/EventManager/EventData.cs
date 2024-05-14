@@ -7,6 +7,9 @@ public class EventData : ScriptableObject
 {
     [Header("General")]
     public float reRollRate = 1f;
+    public int eventRadius = 2;
+    public float satisfactionIncreaseAmount = 1f;
+    public float satisfactionIncreaseTime = 1f;
     [Header("Satisfaction")]
     public float shittingSatisfactionDropRate = 1f;
     public float pissingSatisfactionDropRate = 1f;
