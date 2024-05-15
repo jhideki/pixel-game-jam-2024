@@ -5,7 +5,6 @@ public class MiniGameController : MonoBehaviour
     //Pointer to current game
     private GameObject currentMiniGameObject;
     private MiniGame currentMiniGame;
-    private bool isPlaying = false;
     //Example of how to initialize a minigame based off an event
     public GameObject drowningMiniGamePrefab;
     //TODO: Add more minigames prefabs here
