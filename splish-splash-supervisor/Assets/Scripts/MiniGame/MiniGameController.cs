@@ -16,7 +16,6 @@ public class MiniGameController : MonoBehaviour
             /*Copy this example for the other mini games. Each mini game prefab must have a script component that initilizes an instance of the MiniGame class and 
             contains a function called Initialize() that returns type MiniGame*/
             case EventType.Drowning:
-                //Minigame starts on Start() method. When it is instantiated it will automacally create a coroutine
                 //Maybe change this to spawn the object as a child of the MiniGameController game object
                 currentMiniGameObject = Instantiate(drowningMiniGamePrefab, new Vector3(e.location.x, e.location.y, 0), Quaternion.identity);
                 currentMiniGame = currentMiniGameObject.GetComponent<DrowningMiniGame>().Initialize();
