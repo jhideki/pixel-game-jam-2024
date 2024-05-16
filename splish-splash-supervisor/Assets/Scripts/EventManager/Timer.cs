@@ -1,3 +1,4 @@
+using System;
 using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 
@@ -30,7 +31,13 @@ public class Timer : MonoBehaviour
             }
         }
     }
-    public float GetCurrentTime()
+    public String GetCurrentTime()
+    {
+        int minutes = (int)currentTime / 60;
+        int seconds = (int)currentTime % 60;
+        return minutes + ":" + seconds;
+    }
+    public float GetExactTime()
     {
         return currentTime;
     }

@@ -57,6 +57,23 @@ public class GenericEvent : EventBase
     public override bool isActive { get; set; }
 }
 
+public class RunningEvent : EventBase
+{
+    public RunningEvent(float startTime, EventData eventData)
+    {
+        Type = EventType.Running;
+        SatisfactionDropRate = eventData.runningSatisfactionDropRate;
+        StartTime = startTime;
+        DamageRate = eventData.runningDamageRate;
+        Duration = eventData.runningDuration;
+        isActive = true;
+        location = nPC.GetLocation();
+        Size = eventData.runningSize;
+        nPC.SetIsEventOccuring(true);
+    }
+    public override bool isActive { get; set; }
+}
+
 public class NonNPCEvent : EventBase
 {
     public NonNPCEvent(float startTime, NPC nPC, float duration, int damageRate, EventType type, float satisfactionDropRate, Vector2Int location, int size)

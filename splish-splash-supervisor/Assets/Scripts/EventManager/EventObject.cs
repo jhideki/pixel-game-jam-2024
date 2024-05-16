@@ -11,6 +11,8 @@ public class EventObject : MonoBehaviour
 
     public void SetEvent(IEvent e)
     {
+
+        boxCollider2D = GetComponent<BoxCollider2D>();
         this.e = e;
         boxCollider2D.size = new Vector2(e.Size, e.Size);
         transform.position = new Vector3(e.location.x, e.location.y, 0);
@@ -19,11 +21,6 @@ public class EventObject : MonoBehaviour
     public IEvent GetEvent()
     {
         return e;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        boxCollider2D = GetComponent<BoxCollider2D>();
     }
 
 }

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 //EventLoop class used to spawn events based of probabilities
 //Also used to manage NPC spawning and time tracking
@@ -11,10 +11,12 @@ public class EventLoop : MonoBehaviour
     public EventManager eventManager;
     public NPCManager npcManager;
     public EventData eventData;
+    private Text clock;
     private Dictionary<EventType, float> eventProbabilitesDict;
 
     void Start()
     {
+        clock = GameObject.Find("Clock").GetComponent<Text>();
         eventProbabilitesDict = new Dictionary<EventType, float>();
 
         //For day cycles and spawning NPCs
@@ -37,12 +39,7 @@ public class EventLoop : MonoBehaviour
 
         StartCoroutine(RunProbabilites());
         StartCoroutine(ManageSatisfaction());
-    }
-
-    void SpawnNPCs()
-    {
-        //TODO: spawn NPCs based on time of day (use timer and other metrics)
-        // npcManager.Spawn(<SOME_VECTOR2_INT_SPAWN_LOCATION>);
+        StartCoroutine(UpdateClock());
     }
 
     void Update()
@@ -51,6 +48,21 @@ public class EventLoop : MonoBehaviour
 
 
     }
+    IEnumerator UpdateClock()
+    {
+        while (true)
+        {
+            clock.text = timer.GetCurrentTime();
+            yield return new WaitForSeconds(1);
+        }
+
+    }
+    void SpawnNPCs()
+    {
+        //TODO: spawn NPCs based on time of day (use timer and other metrics)
+        // npcManager.Spawn(<SOME_VECTOR2_INT_SPAWN_LOCATION>);
+    }
+
 
     IEnumerator ManageSatisfaction()
     {
@@ -84,17 +96,17 @@ public class EventLoop : MonoBehaviour
         switch (type)
         {
             case EventType.Drowning:
-                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.drowningDuration, eventData.drowningDamageRate, type, eventData.drowningSatisfactionDropRate, eventData.drowningSize);
+                return new GenericEvent(timer.GetExactTime(), npc, eventData.drowningDuration, eventData.drowningDamageRate, type, eventData.drowningSatisfactionDropRate, eventData.drowningSize);
             case EventType.Shitting:
-                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.shittingDuration, eventData.shittingDamageRate, type, eventData.shittingSatisfactionDropRate, eventData.shittingSize);
+                return new GenericEvent(timer.GetExactTime(), npc, eventData.shittingDuration, eventData.shittingDamageRate, type, eventData.shittingSatisfactionDropRate, eventData.shittingSize);
             case EventType.Pissing:
-                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.pissingDuration, eventData.pissingDamageRate, type, eventData.pissingSatisfactionDropRate, eventData.pissingSize);
+                return new GenericEvent(timer.GetExactTime(), npc, eventData.pissingDuration, eventData.pissingDamageRate, type, eventData.pissingSatisfactionDropRate, eventData.pissingSize);
             case EventType.Running:
-                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.runningDuration, eventData.runningDamageRate, type, eventData.runningSatisfactionDropRate, eventData.runningSize);
+                return new GenericEvent(timer.GetExactTime(), npc, eventData.runningDuration, eventData.runningDamageRate, type, eventData.runningSatisfactionDropRate, eventData.runningSize);
             case EventType.OverHeating:
-                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.overHeatingDuration, eventData.overHeatingDamageRate, type, eventData.overHeatingSatisfactionDropRate, eventData.overHeatingSize);
+                return new GenericEvent(timer.GetExactTime(), npc, eventData.overHeatingDuration, eventData.overHeatingDamageRate, type, eventData.overHeatingSatisfactionDropRate, eventData.overHeatingSize);
             case EventType.Hysteria:
-                return new GenericEvent(timer.GetCurrentTime(), npc, eventData.hysteriaDuration, eventData.hysteriaDamageRate, type, eventData.hysteriaSatisfactionDropRate, eventData.hysteriaSize);
+                return new GenericEvent(timer.GetExactTime(), npc, eventData.hysteriaDuration, eventData.hysteriaDamageRate, type, eventData.hysteriaSatisfactionDropRate, eventData.hysteriaSize);
             default:
                 return null;
         }
