@@ -64,6 +64,7 @@ public class EventManager : MonoBehaviour
 
         //cleanup
         activeEvents.Remove(eventObject);
+        Destroy(eventObject);
         if (npc.GetStatus() == NPCStatus.Dead)
         {
             npcManager.RemoveNPC(npc.gameObject);

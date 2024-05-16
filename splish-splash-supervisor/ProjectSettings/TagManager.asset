@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Event
   - NPC
+  - Clock
   layers:
   - Default
   - TransparentFX
@@ -13,8 +14,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Image
   - 
   - 
   - 
@@ -48,4 +49,13 @@ TagManager:
     locked: 0
   - name: NPC
     uniqueID: 1718361251
+    locked: 0
+  - name: Event
+    uniqueID: 1501342269
+    locked: 0
+  - name: Player
+    uniqueID: 1811817089
+    locked: 0
+  - name: UI
+    uniqueID: 4121416419
     locked: 0

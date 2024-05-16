@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4778973215103242739}
   - component: {fileID: 5973807794442137864}
+  - component: {fileID: 215618787263686726}
   m_Layer: 0
   m_Name: DrowningMiniGame
   m_TagString: Untagged
@@ -44,5 +45,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 757ae4b5e264e894d905604e4189b9ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sequenceKeys: 610000007300000001010000
-  timeBuffer: 0.5
+  sequenceKeys: 080000000d00000020000000
+  timeBuffer: 2
+--- !u!114 &215618787263686726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2461440065516099940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 456044f87ea30fa458829024108b59a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
