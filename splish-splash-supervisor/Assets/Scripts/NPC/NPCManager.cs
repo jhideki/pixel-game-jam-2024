@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public enum NPCStatus
 {
     Swimming,
+    Hottub,
+    travelling,
     Drowning,
     Shitting,
     Pissing,

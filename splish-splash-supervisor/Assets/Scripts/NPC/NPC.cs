@@ -1,8 +1,16 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class NPC : MonoBehaviour
 {
+
+    private enum Target
+    {
+        tub,
+        pool,
+    }
+
     public NPCParameters parameters;
     private int health;
     private float satisfaction;
@@ -12,10 +20,12 @@ public class NPC : MonoBehaviour
     private NPCManager npcManager;
     private bool isEventOccuring;
 
-    private Queue<Vector3> pathQueue = new Queue<Vector3>();
+    private Queue<Tuple<Target,Vector3>> pathQueue = new Queue<Tuple<Target,Vector3>>();
     private Vector3 targetPosition;
     private bool isMoving = true;
     public float moveSpeed = 5f; // Adjust the speed as needed
+    private Vector3 randomDirection;
+    private float changeDirectionInterval;
 
     void Start()
     {
@@ -30,7 +40,7 @@ public class NPC : MonoBehaviour
         // Start moving along the path if there are waypoints
         if (pathQueue.Count > 0)
         {
-            targetPosition = pathQueue.Dequeue();
+            targetPosition = pathQueue.Dequeue().0;
             isMoving = true;
         }
     }
@@ -40,7 +50,22 @@ public class NPC : MonoBehaviour
         if (isMoving)
         {
             MoveTowardsTarget();
+            //Debug.Log("moving");
         }
+        switch (status):
+        case NPCStatus.Swimming:
+            Swim();
+            break;
+
+        case NPCStatus.Hottub:
+            Hottub();
+            break;
+NPCs Spawn at Fixed Location
+
+
+        case NPCStatus.Idle:
+            Idle();
+            break;
     }
 
     public void DealDamage(int damage)
@@ -129,15 +154,52 @@ public class NPC : MonoBehaviour
         else
         {
             isMoving = false; // Stop moving when the path is complete
+            Debug.Log("random walk");
         }
     }
 
+    private void Swim()
+    {
+
+    }
+
+    IEnumerator ChangeDirectionRoutine()
+    {
+        while (true)
+        {
+            randomDirection = GetRandomDirection();
+            targetPosition = transform.position + randomDirection;
+            changeDirectionInterval = Random.Range(3f, 6f); // Change direction every 1 to 3 seconds
+            yield return new WaitForSeconds(changeDirectionInterval);
+        }
+    }
+
+    Vector3 GetRandomDirection()
+    {
+        List<Vector3> directions = new List<Vector3>();
+        directions.Add(new Vector3(5, 0, 0));
+        directions.Add(new Vector3(-5, 0, 0));
+        directions.Add(new Vector3(0, 5, 0));
+        directions.Add(new Vector3(0, -5, 0));
+
+        return directions[Random.Range(0, directions.Count)];
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Reverse direction on collision
+    
+        targetPosition = transform.position + randomDirection;
+    }
+
+    /*
     //TODO: Move
     public void SetMove(int x, int y)
     {
         pathQueue.Enqueue(new Vector3(x, y, 0));
     }
-    
+    */
+
     public void GetPath()
     {
         int z = Random.Range(1, 11);
@@ -153,13 +215,15 @@ public class NPC : MonoBehaviour
 
     public void PathOne()
     {
-        SetMove(12, 1);
+        SetStatus(NPCStatus.travelling);
+        pathQueue.Enqueue(Target.tub,new Vector3(12, 2, 0));
     }
 
     public void Pathtwo()
     {
-        SetMove(0, -8);
-        SetMove(0, -5);
+        SetStatus(NPCStatus.travelling);
+        pathQueue.Enqueue(Target.pool,new Vector3(0, -8, 0));
+        pathQueue.Enqueue(Target.pool,new Vector3(0, -3, 0));
     }
 
     public Vector2Int GetLocation()
