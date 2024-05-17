@@ -1,18 +1,8 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
-public enum NPCStatus
-{
-    Swimming,
-    Drowning,
-    Shitting,
-    Pissing,
-    Overheating,
-    Running,
-    Idle,
-    Hysteria,
-    Dead,
-}
+
 
 public class NPCManager : MonoBehaviour
 {
@@ -29,7 +19,6 @@ public class NPCManager : MonoBehaviour
     {
         while (true)
         {
-
             //GameObject nPCInsatnce = Instantiate(NPCPrefab, new Vector3(location.x, location.y, 0), Quaternion.identity);
             GameObject nPCInsatnce = Instantiate(NPCPrefab, spawnLocation, Quaternion.identity);
             NPC npc = nPCInsatnce.GetComponent<NPC>();

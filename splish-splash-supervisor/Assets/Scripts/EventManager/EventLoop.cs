@@ -33,12 +33,6 @@ public class EventLoop : MonoBehaviour
         //Will remove this block later (Will be replaced by SpawnNPCs)
         npcManager.StartSpawning();
 
-        for (int i = 0; i < 10; i++)
-        {
-            //npcManager.StartSpawning();
-        }
-        //End block 
-
         StartCoroutine(RunProbabilites());
         StartCoroutine(ManageSatisfaction());
         StartCoroutine(UpdateClock());
