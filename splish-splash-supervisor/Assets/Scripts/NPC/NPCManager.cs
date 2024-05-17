@@ -22,13 +22,32 @@ public class NPCManager : MonoBehaviour
     public GameObject NPCPrefab;
     public EventData eventData;
 
-    public void Spawn(Vector2Int location)
+    private Vector3 spawnLocation = new Vector3(12, -8, 0); // Fixed spawn location
+    public float spawnDelay = 5.0f; // Delay time in seconds between spawns
+
+    public IEnumerator Spawn()
     {
-        GameObject nPCInsatnce = Instantiate(NPCPrefab, new Vector3(location.x, location.y, 0), Quaternion.identity);
-        NPC npc = nPCInsatnce.GetComponent<NPC>();
-        startingSatisfaction += npc.GetSatisfaction();
-        currentSatisfaction += npc.GetSatisfaction();
-        nPCs.Add(nPCInsatnce);
+        while (true)
+        {
+
+            //GameObject nPCInsatnce = Instantiate(NPCPrefab, new Vector3(location.x, location.y, 0), Quaternion.identity);
+            GameObject nPCInsatnce = Instantiate(NPCPrefab, spawnLocation, Quaternion.identity);
+            NPC npc = nPCInsatnce.GetComponent<NPC>();
+
+            //npc.GetPath();
+
+            startingSatisfaction += npc.GetSatisfaction();
+            currentSatisfaction += npc.GetSatisfaction();
+            nPCs.Add(nPCInsatnce);
+
+            yield return new WaitForSeconds(spawnDelay);
+        }
+    }
+
+    // Method to start the spawning coroutine
+    public void StartSpawning()
+    {
+        StartCoroutine(Spawn());
     }
 
     public NPC GetRandomNPC()

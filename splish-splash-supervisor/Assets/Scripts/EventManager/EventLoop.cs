@@ -31,9 +31,11 @@ public class EventLoop : MonoBehaviour
         eventProbabilitesDict.Add(EventType.Hysteria, eventData.hysteriaProbability);
 
         //Will remove this block later (Will be replaced by SpawnNPCs)
+        npcManager.StartSpawning();
+
         for (int i = 0; i < 10; i++)
         {
-            npcManager.Spawn(new Vector2Int(Random.Range(-10, 10), Random.Range(-10, 10)));
+            //npcManager.StartSpawning();
         }
         //End block 
 
