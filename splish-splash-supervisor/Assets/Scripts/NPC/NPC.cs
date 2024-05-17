@@ -4,68 +4,219 @@ using System.Collections;
 
 public class NPC : MonoBehaviour
 {
-
-    private enum Target
-    {
-        tub,
-        pool,
-    }
-
+    //Constant parameters
     public NPCParameters parameters;
+
+    //NPC variables
     private int health;
     private float satisfaction;
     private float startingSatisfaction;
     private string name;
     private NPCStatus status;
+    private Location targetLocation;
+
     private NPCManager npcManager;
     private bool isEventOccuring;
+    private bool isStatusRoutineRunning;
 
-    private Queue<Tuple<Target,Vector3>> pathQueue = new Queue<Tuple<Target,Vector3>>();
-    private Vector3 targetPosition;
-    private bool isMoving = true;
-    public float moveSpeed = 5f; // Adjust the speed as needed
-    private Vector3 randomDirection;
-    private float changeDirectionInterval;
+    private Rigidbody2D rb;
+    private Queue<Vector3> pathQueue = new Queue<Vector3>();
 
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         npcManager = GameObject.Find("EventManager").GetComponent<NPCManager>();
         name = parameters.names[Random.Range(0, parameters.names.Length)];
         health = Random.Range(parameters.minHealth, parameters.maxHealth);
         satisfaction = Random.Range(parameters.minSatisfaction, parameters.maxSatisfaction);
         startingSatisfaction = satisfaction;
         Debug.Log("Created " + name + " with health " + health + " and satisfaction " + satisfaction);
-        GetPath();
-
-        // Start moving along the path if there are waypoints
-        if (pathQueue.Count > 0)
-        {
-            targetPosition = pathQueue.Dequeue().0;
-            isMoving = true;
-        }
+        SetSpawnTargetLocation();
     }
 
     void Update()
     {
-        if (isMoving)
+        switch (status)
         {
-            MoveTowardsTarget();
-            //Debug.Log("moving");
+            case NPCStatus.Travelling:
+                if (!isStatusRoutineRunning)
+                {
+                    StartCoroutine(MoveTowardsTarget());
+                }
+                MoveTowardsTarget();
+                break;
+            case NPCStatus.Swimming:
+                if (!isStatusRoutineRunning)
+                {
+                    StartCoroutine(Swim());
+                }
+                break;
+            case NPCStatus.Hottub:
+                if (!isStatusRoutineRunning)
+                {
+                    StartCoroutine(Hottub());
+                }
+                break;
         }
-        switch (status):
-        case NPCStatus.Swimming:
-            Swim();
-            break;
-
-        case NPCStatus.Hottub:
-            Hottub();
-            break;
-NPCs Spawn at Fixed Location
+    }
 
 
-        case NPCStatus.Idle:
-            Idle();
-            break;
+    IEnumerator MoveTowardsTarget()
+    {
+
+        isStatusRoutineRunning = true;
+        //Check if queue is empty and if there is a target location, if not set new target and move towards target
+        while (pathQueue.Count > 0 && targetLocation != Location.None)
+        {
+            Vector3 targetPosition = pathQueue.Dequeue();
+            while (transform.position != targetPosition && status == NPCStatus.Travelling)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, parameters.moveSpeed * Time.deltaTime);
+                yield return null;
+            }
+        }
+        //We have now exhausted all of the paths in the queue and have reached our destination
+        switch (targetLocation)
+        {
+            case Location.Hottub:
+                status = NPCStatus.Hottub;
+                break;
+            case Location.Pool:
+                status = NPCStatus.Swimming;
+                break;
+        }
+
+        isStatusRoutineRunning = false;
+        //Set target location to none
+        targetLocation = Location.None;
+    }
+
+
+    IEnumerator Swim()
+    {
+        while (status == NPCStatus.Swimming)
+        {
+            //Set flag so we don't spawn multiple coroutines
+            isStatusRoutineRunning = true;
+            Direction randomDirection = (Direction)Random.Range(0, System.Enum.GetValues(typeof(Direction)).Length);
+            Vector3 velocity = new Vector3(0f, 0f, 0f);
+            switch (randomDirection)
+            {
+                case Direction.North:
+                    velocity.y = parameters.swimVelocity;
+                    break;
+                case Direction.South:
+                    velocity.y = -parameters.swimVelocity;
+                    break;
+                case Direction.West:
+                    velocity.x = -parameters.swimVelocity;
+                    break;
+                case Direction.East:
+                    velocity.x = parameters.swimVelocity;
+                    break;
+            }
+            rb.velocity = velocity;
+            yield return new WaitForSeconds(Random.Range(parameters.changeDirectionIntervalMin, parameters.changeDirectionIntervalMax));
+        }
+
+        isStatusRoutineRunning = false;
+    }
+
+    //Similar behaviour to swim
+    IEnumerator Hottub()
+    {
+        while (status == NPCStatus.Hottub)
+        {
+            isStatusRoutineRunning = true;
+            Direction randomDirection = (Direction)Random.Range(0, System.Enum.GetValues(typeof(Direction)).Length);
+            Vector3 velocity = new Vector3(0f, 0f, 0f);
+            switch (randomDirection)
+            {
+                case Direction.North:
+                    velocity.y = parameters.hottubVelocity;
+                    break;
+                case Direction.South:
+                    velocity.y = -parameters.hottubVelocity;
+                    break;
+                case Direction.West:
+                    velocity.x = -parameters.hottubVelocity;
+                    break;
+                case Direction.East:
+                    velocity.x = parameters.hottubVelocity;
+                    break;
+            }
+            rb.velocity = velocity;
+            yield return new WaitForSeconds(Random.Range(parameters.changeDirectionIntervalMin, parameters.changeDirectionIntervalMax));
+        }
+        isStatusRoutineRunning = false;
+
+    }
+
+    //Only triggered when exiting the box collider
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        Debug.Log("collision status : " + status);
+        Vector2 newVelocity = rb.velocity;
+        switch (status)
+        {
+            case NPCStatus.Hottub:
+                if (collision.gameObject.tag == "Hottub")
+                {
+                    newVelocity *= -1;
+                }
+                break;
+            case NPCStatus.Swimming:
+                if (collision.gameObject.tag == "Pool")
+                {
+                    newVelocity *= -1;
+                }
+                break;
+            //Allow npc to pass through if travelling
+            case NPCStatus.Travelling:
+                break;
+        }
+        rb.velocity = newVelocity;
+    }
+
+
+
+    //Updates targetLocation called from start
+    private void SetSpawnTargetLocation()
+    {
+        //Set travelling status to signal main update loop
+        status = NPCStatus.Travelling;
+        // subtract 1 to exclude None
+        targetLocation = (Location)Random.Range(0, System.Enum.GetValues(typeof(Location)).Length - 1);
+        switch (targetLocation)
+        {
+            case Location.Pool:
+                pathQueue.Enqueue(new Vector3(0, -8, 0));
+                pathQueue.Enqueue(new Vector3(0, -3, 0));
+                break;
+            case Location.Hottub:
+                pathQueue.Enqueue(new Vector3(12, 2, 0));
+                break;
+                //Add more destination coordinates here
+        }
+    }
+
+    public void SetNewTargetLocation(Location location)
+    {
+        status = NPCStatus.Travelling;
+        targetLocation = location;
+    }
+
+
+    public Vector2Int GetLocation()
+    {
+        return new Vector2Int((int)transform.position.x, (int)transform.position.y);
+    }
+
+    public void Leave()
+    {
+        Debug.Log("NPC " + name + " left the pool. U suck!");
+        //Place holder value. Will update once we have exit coords.
+        //Move(new Vector2Int(0, 0));
     }
 
     public void DealDamage(int damage)
@@ -82,10 +233,12 @@ NPCs Spawn at Fixed Location
     {
         return isEventOccuring;
     }
+
     public void SetIsEventOccuring(bool value)
     {
         isEventOccuring = value;
     }
+
     public void LowerSatisfaction(float amount)
     {
         Debug.Log(name + " lost " + amount + " satisfaction");
@@ -111,7 +264,6 @@ NPCs Spawn at Fixed Location
     public int GetHealth()
     {
         return health;
-
     }
 
     public NPCStatus GetStatus()
@@ -138,104 +290,5 @@ NPCs Spawn at Fixed Location
     public float CalculateSatisfactionPercentage()
     {
         return (float)satisfaction / (float)startingSatisfaction;
-    }
-
-    // Move the NPC towards the target position
-    void MoveTowardsTarget()
-    {
-        if (transform.position != targetPosition)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-        }
-        else if (pathQueue.Count > 0)
-        {
-            targetPosition = pathQueue.Dequeue();
-        }
-        else
-        {
-            isMoving = false; // Stop moving when the path is complete
-            Debug.Log("random walk");
-        }
-    }
-
-    private void Swim()
-    {
-
-    }
-
-    IEnumerator ChangeDirectionRoutine()
-    {
-        while (true)
-        {
-            randomDirection = GetRandomDirection();
-            targetPosition = transform.position + randomDirection;
-            changeDirectionInterval = Random.Range(3f, 6f); // Change direction every 1 to 3 seconds
-            yield return new WaitForSeconds(changeDirectionInterval);
-        }
-    }
-
-    Vector3 GetRandomDirection()
-    {
-        List<Vector3> directions = new List<Vector3>();
-        directions.Add(new Vector3(5, 0, 0));
-        directions.Add(new Vector3(-5, 0, 0));
-        directions.Add(new Vector3(0, 5, 0));
-        directions.Add(new Vector3(0, -5, 0));
-
-        return directions[Random.Range(0, directions.Count)];
-    }
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        // Reverse direction on collision
-    
-        targetPosition = transform.position + randomDirection;
-    }
-
-    /*
-    //TODO: Move
-    public void SetMove(int x, int y)
-    {
-        pathQueue.Enqueue(new Vector3(x, y, 0));
-    }
-    */
-
-    public void GetPath()
-    {
-        int z = Random.Range(1, 11);
-        if (z <= 5)
-        {
-            PathOne();
-        }
-        else
-        {
-            Pathtwo();
-        }
-    }
-
-    public void PathOne()
-    {
-        SetStatus(NPCStatus.travelling);
-        pathQueue.Enqueue(Target.tub,new Vector3(12, 2, 0));
-    }
-
-    public void Pathtwo()
-    {
-        SetStatus(NPCStatus.travelling);
-        pathQueue.Enqueue(Target.pool,new Vector3(0, -8, 0));
-        pathQueue.Enqueue(Target.pool,new Vector3(0, -3, 0));
-    }
-
-    public Vector2Int GetLocation()
-    {
-        return new Vector2Int((int)transform.position.x, (int)transform.position.y);
-    }
-
-    //TODO: Leave (will call Move() to leave pool. Once move is done destroy game object)
-    public void Leave()
-    {
-        Debug.Log("NPC " + name + " left the pool. U suck!");
-        //Place holder value. Will update once we have exit coords.
-        //Move(new Vector2Int(0, 0));
     }
 }

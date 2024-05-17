@@ -8,4 +8,9 @@ public class NPCParameters : ScriptableObject
     public int minHealth;
     public int maxSatisfaction;
     public int minSatisfaction;
+    public float swimVelocity;
+    public float changeDirectionIntervalMax;
+    public float changeDirectionIntervalMin;
+    public float hottubVelocity;
+    public float moveSpeed;
 }

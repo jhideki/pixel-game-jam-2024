@@ -7,6 +7,8 @@ TagManager:
   - Event
   - NPC
   - Clock
+  - Pool
+  - Hottub
   layers:
   - Default
   - TransparentFX

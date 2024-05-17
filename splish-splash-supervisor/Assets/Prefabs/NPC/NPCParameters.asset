@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 578e3314e22bdd84795daddd27e0605f, type: 3}
-  m_Name: CommonNames
+  m_Name: NPCParameters
   m_EditorClassIdentifier: 
   names:
   - Karen
@@ -26,3 +26,8 @@ MonoBehaviour:
   minHealth: 100
   maxSatisfaction: 200
   minSatisfaction: 100
+  swimVelocity: 2
+  changeDirectionIntervalMax: 5
+  changeDirectionIntervalMin: 4
+  hottubVelocity: 1
+  moveSpeed: 10
