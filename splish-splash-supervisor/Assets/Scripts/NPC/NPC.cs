@@ -43,7 +43,6 @@ public class NPC : MonoBehaviour
                 {
                     StartCoroutine(MoveTowardsTarget());
                 }
-                MoveTowardsTarget();
                 break;
             case NPCStatus.Swimming:
                 if (!isStatusRoutineRunning)
