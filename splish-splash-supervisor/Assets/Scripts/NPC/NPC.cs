@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class NPC : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class NPC : MonoBehaviour
     private NPCManager npcManager;
     private bool isEventOccuring;
 
+    private Queue<Vector3> pathQueue = new Queue<Vector3>();
+    private Vector3 targetPosition;
+    private bool isMoving = true;
+    public float moveSpeed = 5f; // Adjust the speed as needed
 
     void Start()
     {
@@ -20,6 +25,22 @@ public class NPC : MonoBehaviour
         satisfaction = Random.Range(parameters.minSatisfaction, parameters.maxSatisfaction);
         startingSatisfaction = satisfaction;
         Debug.Log("Created " + name + " with health " + health + " and satisfaction " + satisfaction);
+        GetPath();
+
+        // Start moving along the path if there are waypoints
+        if (pathQueue.Count > 0)
+        {
+            targetPosition = pathQueue.Dequeue();
+            isMoving = true;
+        }
+    }
+
+    void Update()
+    {
+        if (isMoving)
+        {
+            MoveTowardsTarget();
+        }
     }
 
     public void DealDamage(int damage)
@@ -94,10 +115,51 @@ public class NPC : MonoBehaviour
         return (float)satisfaction / (float)startingSatisfaction;
     }
 
-    //TODO: Move
-    public void Move(Vector2Int destination)
+    // Move the NPC towards the target position
+    void MoveTowardsTarget()
     {
+        if (transform.position != targetPosition)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+        }
+        else if (pathQueue.Count > 0)
+        {
+            targetPosition = pathQueue.Dequeue();
+        }
+        else
+        {
+            isMoving = false; // Stop moving when the path is complete
+        }
+    }
 
+    //TODO: Move
+    public void SetMove(int x, int y)
+    {
+        pathQueue.Enqueue(new Vector3(x, y, 0));
+    }
+    
+    public void GetPath()
+    {
+        int z = Random.Range(1, 11);
+        if (z <= 5)
+        {
+            PathOne();
+        }
+        else
+        {
+            Pathtwo();
+        }
+    }
+
+    public void PathOne()
+    {
+        SetMove(12, 1);
+    }
+
+    public void Pathtwo()
+    {
+        SetMove(0, -8);
+        SetMove(0, -5);
     }
 
     public Vector2Int GetLocation()
@@ -110,6 +172,6 @@ public class NPC : MonoBehaviour
     {
         Debug.Log("NPC " + name + " left the pool. U suck!");
         //Place holder value. Will update once we have exit coords.
-        Move(new Vector2Int(0, 0));
+        //Move(new Vector2Int(0, 0));
     }
 }
