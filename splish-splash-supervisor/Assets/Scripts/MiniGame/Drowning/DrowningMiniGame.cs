@@ -1,17 +1,17 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DrowningMiniGame : MonoBehaviour
 {
+    public float timeLimit = 4f;
     private MiniGameTimer timer;
     public Sprite imageSprite;
     private Text miniGameTimer;
+    private Text miniGameText;
     //In seconds
     private MiniGame miniGame;
     private ImageManager imageManager;
-    private ImageManager arrowImageManager;
     private bool loading = false;
 
     public GameObject movingBlock;
@@ -25,8 +25,8 @@ public class DrowningMiniGame : MonoBehaviour
     public MiniGame Initialize()
     {
         imageManager = GameObject.Find("Canvas/MiniGame/MiniGameBGImage").GetComponent<ImageManager>();
-        arrowImageManager = GameObject.Find("Canvas/MiniGame/MiniGameKeyImage").GetComponent<ImageManager>();
         miniGameTimer = GameObject.Find("Canvas/MiniGame/MiniGameTimerText").GetComponent<Text>();
+        miniGameText = GameObject.Find("Canvas/MiniGame/MiniGameText").GetComponent<Text>();
 
         //Set image sprite
         imageManager.SetImage(imageSprite);
@@ -47,7 +47,6 @@ public class DrowningMiniGame : MonoBehaviour
         StartCoroutine(imageManager.FadeImage(true, OnImageLoaded));
         while (loading)
         {
-
             yield return null;
         }
         timer.StartTimer();
@@ -59,40 +58,49 @@ public class DrowningMiniGame : MonoBehaviour
         loading = false;
     }
 
-    //TODO: visual feedback
     IEnumerator RunGame()
     {
-        arrowImageManager.ToggleImage();
+        miniGameText.text = "";
         timer.StartTimer();
         MovingBlock mb = movingBlock.GetComponent<MovingBlock>();
+        Target t = target.GetComponent<Target>();
 
         while (miniGame.GetStatus() == MiniGameStatus.Playing)
         {
+
+            //update timer UI
+            miniGameTimer.text = (timeLimit - timer.GetCurrentTime()).ToString();
+
+            if (timer.GetCurrentTime() > timeLimit)
+            {
+                miniGame.SetStatus(MiniGameStatus.Lose);
+            }
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 mb.Toggle();
             }
-            BoxCollider2D mbCollider = movingBlock.GetComponent<BoxCollider2D>();
-            BoxCollider2D targetCollider = target.GetComponent<BoxCollider2D>();
 
-            Gizmos.DrawWireCube(mbCollider.bounds.center, mbCollider.bounds.size);
-            Gizmos.DrawWireCube(targetCollider.bounds.center, targetCollider.bounds.size);
-
-            if (movingBlock.GetComponent<BoxCollider2D>().bounds.Intersects(target.GetComponent<BoxCollider2D>().bounds) && !mb.IsMoving())
+            if (t.HasCollided && !mb.IsMoving())
             {
-                Debug.Log("----- u won");
+                miniGameText.text = "YOU WIN!!!!!";
+                yield return new WaitForSeconds(2f);
+                miniGame.SetStatus(MiniGameStatus.Win);
             }
             else if (!mb.IsMoving())
             {
+                miniGameText.text = "YOU LOSE!!!!! GET CLAPPED PUSSY";
                 yield return new WaitForSeconds(2f);
-                mb.Toggle();
+                miniGame.SetStatus(MiniGameStatus.Lose);
             }
             yield return null;
         }
 
-        //Fade out image
+        //Cleanup
         loading = true;
         StartCoroutine(imageManager.FadeImage(false, OnImageLoaded));
+        miniGameTimer.enabled = false;
+        miniGameText.enabled = false;
         while (loading)
         {
             yield return null;

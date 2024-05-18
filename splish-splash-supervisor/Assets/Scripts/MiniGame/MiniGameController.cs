@@ -46,7 +46,7 @@ public class MiniGameController : MonoBehaviour
             if (currentMiniGame.GetStatus() == MiniGameStatus.Win)
             {
                 //TODO: when player wins mingame
-                currentMiniGame.SetStatus(MiniGameStatus.Complete);
+                Destroy(currentMiniGameObject);
             }
 
             if (currentMiniGame.GetStatus() == MiniGameStatus.Lose)
