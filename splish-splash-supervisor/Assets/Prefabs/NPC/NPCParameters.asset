@@ -29,5 +29,5 @@ MonoBehaviour:
   swimVelocity: 2
   changeDirectionIntervalMax: 5
   changeDirectionIntervalMin: 4
-  hottubVelocity: 1
+  hottubVelocity: 0.5
   moveSpeed: 10
