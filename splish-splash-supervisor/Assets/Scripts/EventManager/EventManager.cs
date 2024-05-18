@@ -25,9 +25,13 @@ public class EventManager : MonoBehaviour
 
     }
 
-    public void EndEvent(GameObject eventObject)
+    public void EndEvent(GameObject eventObject, Location targetLocation, NPCStatus status)
     {
-        eventObject.GetComponent<EventObject>().GetEvent().isActive = false;
+        IEvent e = eventObject.GetComponent<IEvent>();
+        NPC npc = e.nPC;
+        //TODO: call npc functions to change status of  npc.
+        //E.g., npc.setStatus(travelling) + npc.setNewTargetLocation()
+        e.isActive = false;
     }
 
 
