@@ -1,6 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+public enum EventType
+{
+    Drowning,
+    Shitting,
+    Pissing,
+    OverHeating,
+    Running,
+    Hysteria,
+}
+
 public enum Direction
 {
     North,

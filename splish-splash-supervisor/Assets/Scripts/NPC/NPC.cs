@@ -7,6 +7,10 @@ public class NPC : MonoBehaviour
     //Constant parameters
     public NPCParameters parameters;
 
+    public EventManager eventManager;
+    public EventData eventData;
+    public EventLoop eventLoop;
+
     //NPC variables
     private int health;
     private float satisfaction;
@@ -22,10 +26,29 @@ public class NPC : MonoBehaviour
     private Rigidbody2D rb;
     private Queue<Vector3> pathQueue = new Queue<Vector3>();
 
+    private static List<Vector3> hottubCoordinates = new List<Vector3>
+    {
+        new Vector3(14, 2, 0),
+        new Vector3(14, 3, 0),
+        new Vector3(13, 3, 0),
+        new Vector3(12, 3, 0),
+        new Vector3(12, 2, 0),
+        new Vector3(12, 1, 0),
+        new Vector3(13, 1, 0),
+        new Vector3(14, 1, 0),
+        // Add more coordinates as needed
+    };
+
+    private static HashSet<Vector3> occupiedHottubCoordinates = new HashSet<Vector3>();
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         npcManager = GameObject.Find("EventManager").GetComponent<NPCManager>();
+        eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+        eventLoop = GameObject.Find("EventManager").GetComponent<EventLoop>();
+        
+    
         name = parameters.names[Random.Range(0, parameters.names.Length)];
         health = Random.Range(parameters.minHealth, parameters.maxHealth);
         satisfaction = Random.Range(parameters.minSatisfaction, parameters.maxSatisfaction);
@@ -121,35 +144,59 @@ public class NPC : MonoBehaviour
         isStatusRoutineRunning = false;
     }
 
-    //Similar behaviour to swim
-    IEnumerator Hottub()
-    {
-        while (status == NPCStatus.Hottub)
-        {
-            isStatusRoutineRunning = true;
-            Direction randomDirection = (Direction)Random.Range(0, System.Enum.GetValues(typeof(Direction)).Length);
-            Vector3 velocity = new Vector3(0f, 0f, 0f);
-            switch (randomDirection)
-            {
-                case Direction.North:
-                    velocity.y = parameters.hottubVelocity;
-                    break;
-                case Direction.South:
-                    velocity.y = -parameters.hottubVelocity;
-                    break;
-                case Direction.West:
-                    velocity.x = -parameters.hottubVelocity;
-                    break;
-                case Direction.East:
-                    velocity.x = parameters.hottubVelocity;
-                    break;
-            }
-            rb.velocity = velocity;
-            yield return new WaitForSeconds(Random.Range(parameters.changeDirectionIntervalMin, parameters.changeDirectionIntervalMax));
-        }
-        isStatusRoutineRunning = false;
 
+     IEnumerator Hottub()
+    {
+        isStatusRoutineRunning = true;
+        bool assignedToHottub = false;
+        
+        foreach (var coord in hottubCoordinates)
+        {
+            if (!occupiedHottubCoordinates.Contains(coord))
+            {
+                occupiedHottubCoordinates.Add(coord);
+                transform.position = coord;
+                rb.velocity = Vector2.zero; // Stop any movement
+                assignedToHottub = true;
+                break;
+            }
+        }
+
+        if(!assignedToHottub)
+        {
+            Debug.Log("No more hottub coordinates available");
+            SetSpawnTargetLocation();
+            yield break;
+        }
+        else
+        {
+            float timeSpentInHottub = 0f;
+            while (status == NPCStatus.Hottub)
+        {
+            timeSpentInHottub += Time.deltaTime;
+            if (timeSpentInHottub >= eventData.preheatDuration)
+            {
+                IEvent overheat = eventLoop.CreateEventNPC(EventType.OverHeating,this);
+                eventManager.TriggerEvent(overheat);
+                timeSpentInHottub = 0f; // Reset the timer after overheating
+            }
+            yield return null;
+        }
+        
+            // Free up the coordinate when NPC leaves the hot tub
+            occupiedHottubCoordinates.Remove(transform.position);
+        }
+
+        isStatusRoutineRunning = false;
     }
+
+    /*
+    void Overheat()
+    {
+        Debug.Log(name + " is overheating in the hot tub!");
+        LowerSatisfaction(parameters.overheatDamage);
+    }
+    */
 
     //Only triggered when exiting the box collider
     void OnTriggerExit2D(Collider2D collision)
@@ -185,15 +232,26 @@ public class NPC : MonoBehaviour
         //Set travelling status to signal main update loop
         status = NPCStatus.Travelling;
         // subtract 1 to exclude None
-        targetLocation = (Location)Random.Range(0, System.Enum.GetValues(typeof(Location)).Length - 1);
+        //targetLocation = (Location)Random.Range(0, System.Enum.GetValues(typeof(Location)).Length - 1);
+
+        float randomValue = Random.Range(0f, 1f);
+        if (randomValue < 0.0f)
+        {
+            targetLocation = Location.Pool;
+        }
+        else
+        {
+            targetLocation = Location.Hottub;
+        }
+
         switch (targetLocation)
         {
             case Location.Pool:
-                pathQueue.Enqueue(new Vector3(0, -8, 0));
-                pathQueue.Enqueue(new Vector3(0, -3, 0));
+                pathQueue.Enqueue(new Vector3(5, -8, 0));
+                pathQueue.Enqueue(new Vector3(5, -3, 0));
                 break;
             case Location.Hottub:
-                pathQueue.Enqueue(new Vector3(12, 2, 0));
+                pathQueue.Enqueue(new Vector3(13, 2, 0));
                 break;
                 //Add more destination coordinates here
         }
@@ -290,4 +348,5 @@ public class NPC : MonoBehaviour
     {
         return (float)satisfaction / (float)startingSatisfaction;
     }
+
 }

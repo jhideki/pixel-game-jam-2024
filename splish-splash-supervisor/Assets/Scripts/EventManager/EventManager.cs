@@ -31,12 +31,13 @@ public class EventManager : MonoBehaviour
     }
 
 
-    public void TriggerEvent(IEvent newEvent)
+    public GameObject TriggerEvent(IEvent newEvent)
     {
         GameObject eventObject = Instantiate(eventPrefab, new Vector3(newEvent.location.x, newEvent.location.y, 0), Quaternion.identity);
         eventObject.GetComponent<EventObject>().SetEvent(newEvent);
         activeEvents.Add(eventObject);
         StartCoroutine(RunEvent(eventObject));
+        return eventObject;
     }
 
     private IEnumerator RunEvent(GameObject eventObject)
