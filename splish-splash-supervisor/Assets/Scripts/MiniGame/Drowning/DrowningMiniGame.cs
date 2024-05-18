@@ -1,25 +1,22 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DrowningMiniGame : MonoBehaviour
 {
-    public KeyCode[] sequenceKeys;
-    public Sprite upArrow;
-    public Sprite downArrow;
-    public Sprite rightArrow;
-    public Sprite leftArrow;
+    public float timeLimit = 4f;
     private MiniGameTimer timer;
     public Sprite imageSprite;
     private Text miniGameTimer;
+    private Text miniGameText;
     //In seconds
-    public float timeBuffer = 0.5f;
-    private int currendKeyIndex = 0;
     private MiniGame miniGame;
     private ImageManager imageManager;
-    private ImageManager arrowImageManager;
     private bool loading = false;
+
+    public GameObject movingBlock;
+    public GameObject target;
+
     void Start()
     {
         miniGame = Initialize();
@@ -28,8 +25,8 @@ public class DrowningMiniGame : MonoBehaviour
     public MiniGame Initialize()
     {
         imageManager = GameObject.Find("Canvas/MiniGame/MiniGameBGImage").GetComponent<ImageManager>();
-        arrowImageManager = GameObject.Find("Canvas/MiniGame/MiniGameKeyImage").GetComponent<ImageManager>();
         miniGameTimer = GameObject.Find("Canvas/MiniGame/MiniGameTimerText").GetComponent<Text>();
+        miniGameText = GameObject.Find("Canvas/MiniGame/MiniGameText").GetComponent<Text>();
 
         //Set image sprite
         imageManager.SetImage(imageSprite);
@@ -61,63 +58,49 @@ public class DrowningMiniGame : MonoBehaviour
         loading = false;
     }
 
-    //TODO: visual feedback
     IEnumerator RunGame()
     {
-        arrowImageManager.ToggleImage();
+        miniGameText.text = "";
         timer.StartTimer();
+        MovingBlock mb = movingBlock.GetComponent<MovingBlock>();
+        Target t = target.GetComponent<Target>();
+
         while (miniGame.GetStatus() == MiniGameStatus.Playing)
         {
-            miniGameTimer.text = (timeBuffer - timer.GetCurrentTime()).ToString();
 
-            if (timer.GetCurrentTime() >= timeBuffer)
+            //update timer UI
+            miniGameTimer.text = (timeLimit - timer.GetCurrentTime()).ToString();
+
+            if (timer.GetCurrentTime() > timeLimit)
             {
                 miniGame.SetStatus(MiniGameStatus.Lose);
-                arrowImageManager.ToggleImage();
             }
 
-            switch (sequenceKeys[currendKeyIndex])
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                case KeyCode.UpArrow:
-                    arrowImageManager.SetImage(upArrow);
-                    break;
-
-                case KeyCode.DownArrow:
-                    arrowImageManager.SetImage(downArrow);
-                    break;
-
-                case KeyCode.RightArrow:
-                    arrowImageManager.SetImage(rightArrow);
-                    break;
-
-                case KeyCode.LeftArrow:
-                    arrowImageManager.SetImage(leftArrow);
-                    break;
+                mb.Toggle();
             }
 
-            if (Input.GetKeyDown(sequenceKeys[currendKeyIndex]))
+            if (t.HasCollided && !mb.IsMoving())
             {
-                currendKeyIndex += 1;
-                if (currendKeyIndex >= sequenceKeys.Length)
-                {
-                    miniGame.SetStatus(MiniGameStatus.Win);
-                    currendKeyIndex = 0;
-                    arrowImageManager.ToggleImage();
-                }
-
+                miniGameText.text = "YOU WIN!!!!!";
+                yield return new WaitForSeconds(2f);
+                miniGame.SetStatus(MiniGameStatus.Win);
             }
-            else if (Input.anyKeyDown)
+            else if (!mb.IsMoving())
             {
-                currendKeyIndex = 0;
-                arrowImageManager.ShakeImage();
+                miniGameText.text = "YOU LOSE!!!!! GET CLAPPED PUSSY";
+                yield return new WaitForSeconds(2f);
+                miniGame.SetStatus(MiniGameStatus.Lose);
             }
             yield return null;
-
         }
 
-        //Fade out image
+        //Cleanup
         loading = true;
         StartCoroutine(imageManager.FadeImage(false, OnImageLoaded));
+        miniGameTimer.enabled = false;
+        miniGameText.enabled = false;
         while (loading)
         {
             yield return null;

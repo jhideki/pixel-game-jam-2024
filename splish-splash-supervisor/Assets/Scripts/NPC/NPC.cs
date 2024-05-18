@@ -224,8 +224,6 @@ public class NPC : MonoBehaviour
         rb.velocity = newVelocity;
     }
 
-
-
     //Updates targetLocation called from start
     private void SetSpawnTargetLocation()
     {
