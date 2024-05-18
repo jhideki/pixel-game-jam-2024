@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,9 @@ public class DrowningMiniGame : MonoBehaviour
     private ImageManager imageManager;
     private ImageManager arrowImageManager;
     private bool loading = false;
+
+    public GameObject movingBlock;
+    public GameObject target;
 
     void Start()
     {
@@ -60,8 +64,29 @@ public class DrowningMiniGame : MonoBehaviour
     {
         arrowImageManager.ToggleImage();
         timer.StartTimer();
+        MovingBlock mb = movingBlock.GetComponent<MovingBlock>();
+
         while (miniGame.GetStatus() == MiniGameStatus.Playing)
         {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                mb.Toggle();
+            }
+            BoxCollider2D mbCollider = movingBlock.GetComponent<BoxCollider2D>();
+            BoxCollider2D targetCollider = target.GetComponent<BoxCollider2D>();
+
+            Gizmos.DrawWireCube(mbCollider.bounds.center, mbCollider.bounds.size);
+            Gizmos.DrawWireCube(targetCollider.bounds.center, targetCollider.bounds.size);
+
+            if (movingBlock.GetComponent<BoxCollider2D>().bounds.Intersects(target.GetComponent<BoxCollider2D>().bounds) && !mb.IsMoving())
+            {
+                Debug.Log("----- u won");
+            }
+            else if (!mb.IsMoving())
+            {
+                yield return new WaitForSeconds(2f);
+                mb.Toggle();
+            }
             yield return null;
         }
 
