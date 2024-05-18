@@ -1,14 +1,5 @@
 using UnityEngine;
 
-public enum EventType
-{
-    Drowning,
-    Shitting,
-    Pissing,
-    OverHeating,
-    Running,
-    Hysteria,
-}
 
 public interface IEvent
 {

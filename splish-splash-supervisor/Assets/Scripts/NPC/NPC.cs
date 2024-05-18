@@ -7,6 +7,10 @@ public class NPC : MonoBehaviour
     //Constant parameters
     public NPCParameters parameters;
 
+    public EventManager eventManager;
+    public EventData eventData;
+    public EventLoop eventLoop;
+
     //NPC variables
     private int health;
     private float satisfaction;
@@ -41,6 +45,10 @@ public class NPC : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         npcManager = GameObject.Find("EventManager").GetComponent<NPCManager>();
+        eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+        eventLoop = GameObject.Find("EventManager").GetComponent<EventLoop>();
+        
+    
         name = parameters.names[Random.Range(0, parameters.names.Length)];
         health = Random.Range(parameters.minHealth, parameters.maxHealth);
         satisfaction = Random.Range(parameters.minSatisfaction, parameters.maxSatisfaction);
@@ -162,7 +170,18 @@ public class NPC : MonoBehaviour
         }
         else
         {
-            yield return new WaitUntil(() => status != NPCStatus.Hottub);
+            float timeSpentInHottub = 0f;
+            while (status == NPCStatus.Hottub)
+        {
+            timeSpentInHottub += Time.deltaTime;
+            if (timeSpentInHottub >= eventData.preheatDuration)
+            {
+                IEvent overheat = eventLoop.CreateEventNPC(EventType.OverHeating,this);
+                eventManager.TriggerEvent(overheat);
+                timeSpentInHottub = 0f; // Reset the timer after overheating
+            }
+            yield return null;
+        }
         
             // Free up the coordinate when NPC leaves the hot tub
             occupiedHottubCoordinates.Remove(transform.position);
@@ -170,6 +189,14 @@ public class NPC : MonoBehaviour
 
         isStatusRoutineRunning = false;
     }
+
+    /*
+    void Overheat()
+    {
+        Debug.Log(name + " is overheating in the hot tub!");
+        LowerSatisfaction(parameters.overheatDamage);
+    }
+    */
 
     //Only triggered when exiting the box collider
     void OnTriggerExit2D(Collider2D collision)
@@ -208,7 +235,7 @@ public class NPC : MonoBehaviour
         //targetLocation = (Location)Random.Range(0, System.Enum.GetValues(typeof(Location)).Length - 1);
 
         float randomValue = Random.Range(0f, 1f);
-        if (randomValue < 0.8f)
+        if (randomValue < 0.0f)
         {
             targetLocation = Location.Pool;
         }

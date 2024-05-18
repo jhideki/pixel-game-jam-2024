@@ -107,4 +107,25 @@ public class EventLoop : MonoBehaviour
                 return null;
         }
     }
+
+    public IEvent CreateEventNPC(EventType type,NPC npc)
+    {
+        switch (type)
+        {
+            case EventType.Drowning:
+                return new GenericEvent(timer.GetExactTime(), npc, eventData.drowningDuration, eventData.drowningDamageRate, type, eventData.drowningSatisfactionDropRate, eventData.drowningSize);
+            case EventType.Shitting:
+                return new GenericEvent(timer.GetExactTime(), npc, eventData.shittingDuration, eventData.shittingDamageRate, type, eventData.shittingSatisfactionDropRate, eventData.shittingSize);
+            case EventType.Pissing:
+                return new GenericEvent(timer.GetExactTime(), npc, eventData.pissingDuration, eventData.pissingDamageRate, type, eventData.pissingSatisfactionDropRate, eventData.pissingSize);
+            case EventType.Running:
+                return new GenericEvent(timer.GetExactTime(), npc, eventData.runningDuration, eventData.runningDamageRate, type, eventData.runningSatisfactionDropRate, eventData.runningSize);
+            case EventType.OverHeating:
+                return new GenericEvent(timer.GetExactTime(), npc, eventData.overHeatingDuration, eventData.overHeatingDamageRate, type, eventData.overHeatingSatisfactionDropRate, eventData.overHeatingSize);
+            case EventType.Hysteria:
+                return new GenericEvent(timer.GetExactTime(), npc, eventData.hysteriaDuration, eventData.hysteriaDamageRate, type, eventData.hysteriaSatisfactionDropRate, eventData.hysteriaSize);
+            default:
+                return null;
+        }
+    }
 }

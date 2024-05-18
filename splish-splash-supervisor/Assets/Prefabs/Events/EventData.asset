@@ -16,27 +16,34 @@ MonoBehaviour:
   eventRadius: 2
   satisfactionIncreaseAmount: 1
   satisfactionIncreaseTime: 1
+  shittingProbability: 10
   shittingSatisfactionDropRate: 1
-  pissingSatisfactionDropRate: 1
-  drowningSatisfactionDropRate: 1
-  overHeatingSatisfactionDropRate: 1
-  hysteriaSatisfactionDropRate: 1
-  runningSatisfactionDropRate: 1
-  shittingProbalilty: 7
-  drowningProbability: 10
-  pissingProbalility: 15
-  runningProbability: 20
-  hysteriaProbability: 10
-  overHeatingProbabilty: 15
-  drowningDamageRate: 10
-  pissingDamageRate: 10
-  runningDamageRate: 10
-  hysteriaDamageRate: 10
-  shittingDamangeRate: 1
-  overHeatingDamageRate: 10
-  overHeatingDuration: 10
-  runningDuration: 10
-  pissingDuration: 10
-  hysteriaDuration: 10
-  drowningDuration: 3
+  shittingDamageRate: 1
   shittingDuration: 5
+  shittingSize: 1
+  pissingProbability: 10
+  pissingSatisfactionDropRate: 1
+  pissingDamageRate: 10
+  pissingDuration: 10
+  pissingSize: 1
+  drowningProbability: 10
+  drowningSatisfactionDropRate: 1
+  drowningDamageRate: 10
+  drowningDuration: 3
+  drowningSize: 1
+  overHeatingProbability: 0
+  overHeatingSatisfactionDropRate: 50
+  overHeatingDamageRate: 20
+  overHeatingDuration: 10000
+  overHeatingSize: 1
+  preheatDuration: 10
+  hysteriaProbability: 10
+  hysteriaSatisfactionDropRate: 1
+  hysteriaDamageRate: 10
+  hysteriaDuration: 10
+  hysteriaSize: 1
+  runningProbability: 20
+  runningSatisfactionDropRate: 1
+  runningDamageRate: 10
+  runningDuration: 10
+  runningSize: 1

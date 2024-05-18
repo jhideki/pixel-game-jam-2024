@@ -35,11 +35,13 @@ public class EventData : ScriptableObject
     public int drowningSize = 1;
 
     [Header("Overheating")]
-    public int overHeatingProbability = 10;
-    public float overHeatingSatisfactionDropRate = 1f;
-    public int overHeatingDamageRate = 10;
-    public float overHeatingDuration = 10f;
+    public int overHeatingProbability = 0;
+    public float overHeatingSatisfactionDropRate = 50f;
+    public int overHeatingDamageRate = 20;
+    public float overHeatingDuration = 100000000f;
     public int overHeatingSize = 1;
+    public int preheatDuration = 10;
+
     [Header("Hysteria")]
     public int hysteriaProbability = 10;
     public float hysteriaSatisfactionDropRate = 1f;
