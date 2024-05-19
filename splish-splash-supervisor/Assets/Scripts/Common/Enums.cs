@@ -24,6 +24,7 @@ public enum Location
 {
     Hottub,
     Pool,
+    IcecreamStand,
     None,
 }
 
@@ -40,4 +41,5 @@ public enum NPCStatus
     Idle,
     Hysteria,
     Dead,
+    IcreamLine,
 }

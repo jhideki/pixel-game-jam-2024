@@ -22,10 +22,9 @@ public class EventManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
     }
 
-    public void EndEvent(GameObject eventObject, Location targetLocation, NPCStatus status)
+    public void EndEvent(GameObject eventObject)
     {
         IEvent e = eventObject.GetComponent<IEvent>();
         NPC npc = e.nPC;
