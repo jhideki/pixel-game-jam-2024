@@ -235,12 +235,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nSprites:
-  - {fileID: 269521965, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: -1006189089, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: -935043186, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: -1929035447, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: 2019830282, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: 836414719, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: -2028388769, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: -1362906196, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 840760799, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: -951555918, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 1955425138, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 881916863, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
   eSprites:
   - {fileID: -566175019, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
   - {fileID: 1845834406, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}

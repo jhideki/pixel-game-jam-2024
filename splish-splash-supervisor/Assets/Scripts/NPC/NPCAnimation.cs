@@ -7,9 +7,9 @@ public class NPCAnimation : MonoBehaviour
     public List<Sprite> nSprites;
     public List<Sprite> eSprites;
     public List<Sprite> sSprites;
-
+    
     public List<Sprite> sIdleSprites;
-    private List<Sprite> selectedSprites;
+    public List<Sprite> selectedSprites;
     private SpriteRenderer spriteRenderer;
     public float frameRate;
     private float changeX;
