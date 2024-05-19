@@ -77,6 +77,7 @@ public class NPCAnimation : MonoBehaviour
 
         int frame = (int)(Time.time * frameRate % 5);
 
+
         spriteRenderer.sprite = selectedSprites[frame];
     }
 

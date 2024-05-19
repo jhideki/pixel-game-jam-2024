@@ -24,16 +24,13 @@ public class swimOverlay : MonoBehaviour
         int frame = (int)(Time.time * frameRate % 5);
         spriteRenderer.sprite = swimSprites[frame];
 
-        if (npc != null)
+        if (npc.GetStatus() == NPCStatus.Swimming || npc.GetStatus() == NPCStatus.Hottub)
         {
-            if (npc.GetStatus() == NPCStatus.Swimming || npc.GetStatus() == NPCStatus.Hottub)
-            {
-                spriteRenderer.enabled = true;
-            }
-            else
-            {
-                spriteRenderer.enabled = false;
-            }
+            spriteRenderer.enabled = true;
+        }
+        else
+        {
+            spriteRenderer.enabled = false;
         }
     }
 }
