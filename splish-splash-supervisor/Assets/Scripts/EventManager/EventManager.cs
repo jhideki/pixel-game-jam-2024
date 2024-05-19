@@ -30,6 +30,30 @@ public class EventManager : MonoBehaviour
         NPC npc = e.nPC;
         //TODO: call npc functions to change status of  npc.
         //E.g., npc.setStatus(travelling) + npc.setNewTargetLocation()
+        switch (e.Type)
+        {
+            case EventType.Drowning:
+                //npc.SetNewTargetLocation(Location.Pool);
+                break;
+            case EventType.Shitting:
+               //npc.SetNewTargetLocation(Location.Pool);
+                break;
+            case EventType.Pissing:
+                //npc.SetNewTargetLocation(Location.Pool);
+                break;
+            case EventType.Running:
+                npc.SetNewTargetLocation(Location.Pool);
+                break;
+            case EventType.OverHeating:
+                 npc.SetNewTargetLocation(Location.Pool);
+                break;
+            case EventType.Hysteria:
+                npc.SetNewTargetLocation(Location.Pool);
+                break;
+            default:
+                break;
+        }
+        
         e.isActive = false;
     }
 
