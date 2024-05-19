@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class NPC : MonoBehaviour
 {
@@ -22,9 +23,13 @@ public class NPC : MonoBehaviour
     private NPCManager npcManager;
     private bool isEventOccuring;
     private bool isStatusRoutineRunning;
+    private Coroutine currentCoroutine;
+    private CoroutineType coroutineType;
+    private SpriteRenderer spriteRenderer;
 
     private Rigidbody2D rb;
     private Queue<Vector3> pathQueue = new Queue<Vector3>();
+    private Vector3 hotTubPosition;
 
     private static List<Vector3> hottubCoordinates = new List<Vector3>
     {
@@ -39,14 +44,14 @@ public class NPC : MonoBehaviour
         // Add more coordinates as needed
     };
 
-    private static HashSet<Vector3> occupiedHottubCoordinates = new HashSet<Vector3>();
-
-    void Start()
+    public void InitializeNPC()
     {
+
         rb = GetComponent<Rigidbody2D>();
         npcManager = GameObject.Find("EventManager").GetComponent<NPCManager>();
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         eventLoop = GameObject.Find("EventManager").GetComponent<EventLoop>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
 
         name = parameters.names[Random.Range(0, parameters.names.Length)];
@@ -62,31 +67,65 @@ public class NPC : MonoBehaviour
         switch (status)
         {
             case NPCStatus.Travelling:
-                if (!isStatusRoutineRunning)
+                if (currentCoroutine != null && coroutineType != CoroutineType.Travelling)
                 {
-                    StartCoroutine(MoveTowardsTarget());
+                    RemoveHottub();
+                    StopCoroutine(currentCoroutine);
+                    currentCoroutine = StartCoroutine(MoveTowardsTarget());
+                }
+                else if (currentCoroutine == null)
+                {
+                    currentCoroutine = StartCoroutine(MoveTowardsTarget());
                 }
                 break;
             case NPCStatus.Swimming:
-                if (!isStatusRoutineRunning)
+                if (currentCoroutine != null && coroutineType != CoroutineType.Swimming)
                 {
-                    StartCoroutine(Swim());
+                    RemoveHottub();
+                    StopCoroutine(currentCoroutine);
+                    currentCoroutine = StartCoroutine(Swim());
+                }
+                else if (currentCoroutine == null)
+                {
+                    currentCoroutine = StartCoroutine(Swim());
                 }
                 break;
             case NPCStatus.Hottub:
-                if (!isStatusRoutineRunning)
+                if (currentCoroutine != null && coroutineType != CoroutineType.Hottub)
                 {
-                    StartCoroutine(Hottub());
+                    StopCoroutine(currentCoroutine);
+                    currentCoroutine = StartCoroutine(Hottub());
+                }
+                else if (currentCoroutine == null)
+                {
+                    currentCoroutine = StartCoroutine(Hottub());
                 }
                 break;
             case NPCStatus.EventOccuring:
-                StartCoroutine(EventOccuring());
+                if (currentCoroutine != null && coroutineType != CoroutineType.EventOccuring)
+                {
+                    RemoveHottub();
+                    StopCoroutine(currentCoroutine);
+                    currentCoroutine = StartCoroutine(EventOccuring());
+                }
+                else if (currentCoroutine == null)
+                {
+                    currentCoroutine = StartCoroutine(EventOccuring());
+                }
                 break;
+        }
+    }
+    private void RemoveHottub()
+    {
+        if (coroutineType == CoroutineType.Hottub)
+        {
+            npcManager.occupiedHottubCoordinates.Remove(hotTubPosition);
+            hotTubPosition = Vector3.zero;
         }
     }
     IEnumerator EventOccuring()
     {
-        isStatusRoutineRunning = true;
+        coroutineType = CoroutineType.EventOccuring;
         rb.velocity = Vector2.zero;
         while (status == NPCStatus.EventOccuring)
         {
@@ -97,17 +136,20 @@ public class NPC : MonoBehaviour
 
     IEnumerator MoveTowardsTarget()
     {
-        isStatusRoutineRunning = true;
+        coroutineType = CoroutineType.Travelling;
+        rb.velocity = Vector2.zero;
         //Check if queue is empty and if there is a target location, if not set new target and move towards target
-        while (pathQueue.Count > 0 && targetLocation != Location.None)
+        while (pathQueue.Count > 0 && targetLocation != Location.None && status == NPCStatus.Travelling)
         {
             Vector3 targetPosition = pathQueue.Dequeue();
+
             while (transform.position != targetPosition && status == NPCStatus.Travelling)
             {
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition, parameters.moveSpeed * Time.deltaTime);
                 yield return null;
             }
         }
+
         //We have now exhausted all of the paths in the queue and have reached our destination
         switch (targetLocation)
         {
@@ -119,7 +161,6 @@ public class NPC : MonoBehaviour
                 break;
         }
 
-        isStatusRoutineRunning = false;
         //Set target location to none
         targetLocation = Location.None;
     }
@@ -127,10 +168,9 @@ public class NPC : MonoBehaviour
 
     IEnumerator Swim()
     {
+        coroutineType = CoroutineType.Swimming;
         while (status == NPCStatus.Swimming)
         {
-            //Set flag so we don't spawn multiple coroutines
-            isStatusRoutineRunning = true;
             Direction randomDirection = (Direction)Random.Range(0, System.Enum.GetValues(typeof(Direction)).Length);
             Vector3 velocity = new Vector3(0f, 0f, 0f);
             switch (randomDirection)
@@ -158,14 +198,15 @@ public class NPC : MonoBehaviour
 
     IEnumerator Hottub()
     {
-        isStatusRoutineRunning = true;
+        coroutineType = CoroutineType.Hottub;
         bool assignedToHottub = false;
 
-        foreach (var coord in hottubCoordinates)
+        foreach (Vector3 coord in hottubCoordinates)
         {
-            if (!occupiedHottubCoordinates.Contains(coord))
+            if (!npcManager.occupiedHottubCoordinates.Contains(coord))
             {
-                occupiedHottubCoordinates.Add(coord);
+                npcManager.occupiedHottubCoordinates.Add(coord);
+                hotTubPosition = coord;
                 transform.position = coord;
                 rb.velocity = Vector2.zero; // Stop any movement
                 assignedToHottub = true;
@@ -177,7 +218,6 @@ public class NPC : MonoBehaviour
         {
             Debug.Log("No more hottub coordinates available");
             SetNewTargetLocation(Location.Pool);
-            yield break;
         }
         else
         {
@@ -187,33 +227,23 @@ public class NPC : MonoBehaviour
                 timeSpentInHottub += Time.deltaTime;
                 if (timeSpentInHottub >= eventData.preheatDuration)
                 {
-                    IEvent overheat = eventLoop.CreateEventNPC(EventType.OverHeating, this);
-                    eventManager.TriggerEvent(overheat);
+                    /*IEvent overheat = eventLoop.CreateEventNPC(EventType.OverHeating, this);
+                    eventManager.TriggerEvent(overheat);*/
                     timeSpentInHottub = 0f; // Reset the timer after overheating
                 }
                 yield return null;
             }
 
-            // Free up the coordinate when NPC leaves the hot tub
-            occupiedHottubCoordinates.Remove(transform.position);
         }
 
-        isStatusRoutineRunning = false;
     }
 
     //Only triggered when exiting the box collider
     void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("collision status : " + status);
         Vector2 newVelocity = rb.velocity;
         switch (status)
         {
-            case NPCStatus.Hottub:
-                if (collision.gameObject.tag == "Hottub")
-                {
-                    newVelocity *= -1;
-                }
-                break;
             case NPCStatus.Swimming:
                 if (collision.gameObject.tag == "Pool")
                 {
@@ -263,6 +293,8 @@ public class NPC : MonoBehaviour
         pathQueue.Enqueue(npcManager.spawnLocation);
         status = NPCStatus.Travelling;
         targetLocation = location;
+
+        pathQueue.Enqueue(npcManager.spawnLocation);
         switch (targetLocation)
         {
             case Location.Pool:

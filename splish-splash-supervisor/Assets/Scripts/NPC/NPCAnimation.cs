@@ -16,6 +16,7 @@ public class NPCAnimation : MonoBehaviour
     public float changeCutoff;
     private float changeY;
     private Rigidbody2D rb;
+    private NPC npc;
 
     private int facing = 1;// 1 for east, 2 for north, 3 for south
 
@@ -25,6 +26,7 @@ public class NPCAnimation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        npc = GetComponent<NPC>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         selectedSprites = eSprites;
@@ -33,15 +35,23 @@ public class NPCAnimation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (!spriteRenderer.flipX && changeX > 0f)
-        {
-            spriteRenderer.flipX = true;
-        }
-        else if (spriteRenderer.flipX && changeX < 0f)
+        if (npc.GetStatus() == NPCStatus.Hottub)
         {
             spriteRenderer.flipX = false;
+
         }
+        else
+        {
+            if (!spriteRenderer.flipX && changeX > 0f)
+            {
+                spriteRenderer.flipX = true;
+            }
+            else if (spriteRenderer.flipX && changeX < 0f)
+            {
+                spriteRenderer.flipX = false;
+            }
+        }
+
 
         if (Mathf.Abs(changeX) > changeCutoff && Mathf.Abs(changeY) > changeCutoff)
         {
@@ -66,7 +76,6 @@ public class NPCAnimation : MonoBehaviour
         lastPosition = transform.position;
 
         int frame = (int)(Time.time * frameRate % 5);
-        Debug.Log("----------- fram: " + frame);
 
         spriteRenderer.sprite = selectedSprites[frame];
     }

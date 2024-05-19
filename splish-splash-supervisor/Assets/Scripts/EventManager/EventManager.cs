@@ -26,29 +26,29 @@ public class EventManager : MonoBehaviour
 
     public void EndEvent(GameObject eventObject)
     {
-        IEvent e = eventObject.GetComponent<IEvent>();
+        IEvent e = eventObject.GetComponent<EventObject>().GetEvent();
         NPC npc = e.nPC;
         //TODO: call npc functions to change status of  npc.
         //E.g., npc.setStatus(travelling) + npc.setNewTargetLocation()
         switch (e.Type)
         {
             case EventType.Drowning:
-                //npc.SetNewTargetLocation(Location.Pool);
+                npc.SetNewTargetLocation(Location.Hottub);
                 break;
             case EventType.Shitting:
-                //npc.SetNewTargetLocation(Location.Pool);
+                npc.SetNewTargetLocation(Location.Hottub);
                 break;
             case EventType.Pissing:
-                //npc.SetNewTargetLocation(Location.Pool);
+                npc.SetNewTargetLocation(Location.Hottub);
                 break;
             case EventType.Running:
-                npc.SetNewTargetLocation(Location.Pool);
+                npc.SetNewTargetLocation(Location.Hottub);
                 break;
             case EventType.OverHeating:
-                npc.SetNewTargetLocation(Location.Pool);
+                npc.SetNewTargetLocation(Location.Hottub);
                 break;
             case EventType.Hysteria:
-                npc.SetNewTargetLocation(Location.Pool);
+                npc.SetNewTargetLocation(Location.Hottub);
                 break;
             default:
                 break;
@@ -99,6 +99,9 @@ public class EventManager : MonoBehaviour
         {
             npcManager.RemoveNPC(npc.gameObject);
         }
-        npc.SetStatus(previousStatus);
+        else if (npc.GetStatus() != NPCStatus.Travelling)
+        {
+            npc.SetStatus(previousStatus);
+        }
     }
 }

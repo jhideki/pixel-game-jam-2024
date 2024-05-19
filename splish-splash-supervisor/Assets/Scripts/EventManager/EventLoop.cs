@@ -30,11 +30,6 @@ public class EventLoop : MonoBehaviour
 
         //Probabilty dictionary
         eventProbabilitesDict.Add(EventType.Drowning, eventData.drowningProbability);
-        eventProbabilitesDict.Add(EventType.Shitting, eventData.shittingProbability);
-        eventProbabilitesDict.Add(EventType.Pissing, eventData.pissingProbability);
-        eventProbabilitesDict.Add(EventType.Running, eventData.runningProbability);
-        eventProbabilitesDict.Add(EventType.OverHeating, eventData.overHeatingProbability);
-        eventProbabilitesDict.Add(EventType.Hysteria, eventData.hysteriaProbability);
 
         //Will remove this block later (Will be replaced by SpawnNPCs)
         npcManager.StartSpawning();
@@ -44,12 +39,6 @@ public class EventLoop : MonoBehaviour
         StartCoroutine(UpdateClock());
     }
 
-    void Update()
-    {
-        SpawnNPCs();
-
-
-    }
     IEnumerator UpdateClock()
     {
         while (true)
@@ -58,11 +47,6 @@ public class EventLoop : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
 
-    }
-    void SpawnNPCs()
-    {
-        //TODO: spawn NPCs based on time of day (use timer and other metrics)
-        // npcManager.Spawn(<SOME_VECTOR2_INT_SPAWN_LOCATION>);
     }
 
 
@@ -79,22 +63,37 @@ public class EventLoop : MonoBehaviour
     {
         while (true)
         {
-            foreach (KeyValuePair<EventType, float> entry in eventProbabilitesDict)
+            NPC npc = npcManager.GetRandomNPC();
+            switch (npc.GetStatus())
             {
-                float rand = Random.Range(0f, 100f);
-                if (rand <= entry.Value)
-                {
-                    IEvent e = CreateEvent(entry.Key);
-                    eventManager.TriggerEvent(e);
-                }
+                case NPCStatus.Swimming:
+                    StartRandomPoolEvent(npc);
+                    break;
+                default:
+                    break;
             }
             yield return new WaitForSeconds(eventData.reRollRate);
         }
     }
-
-    IEvent CreateEvent(EventType type)
+    private void StartRandomPoolEvent(NPC npc)
     {
-        NPC npc = npcManager.GetRandomNPC();
+        foreach (KeyValuePair<EventType, float> entry in eventProbabilitesDict)
+        {
+            float rand = Random.Range(0f, 100f);
+
+            if (npc != null && npc.GetStatus() != NPCStatus.Travelling && npc.GetIsEventOccuring() == false)
+            {
+                if (rand <= entry.Value)
+                {
+                    IEvent e = CreateEvent(entry.Key, npc);
+                    eventManager.TriggerEvent(e);
+                }
+            }
+        }
+    }
+
+    IEvent CreateEvent(EventType type, NPC npc)
+    {
         switch (type)
         {
             case EventType.Drowning:

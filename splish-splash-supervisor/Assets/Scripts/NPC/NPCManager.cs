@@ -13,6 +13,9 @@ public class NPCManager : MonoBehaviour
     private float currentSatisfaction = 0f;
     public EventData eventData;
 
+    public HashSet<Vector3> occupiedHottubCoordinates = new HashSet<Vector3>();
+
+
     public Vector3 spawnLocation = new Vector3(12, -8, 0); // Fixed spawn location
     public float spawnDelay = 4f; // Delay time in seconds between spawns
 
@@ -23,7 +26,7 @@ public class NPCManager : MonoBehaviour
             GameObject npcPrefab = npcVariants[Random.Range(0, npcVariants.Count)];
             GameObject nPCInsatnce = Instantiate(npcPrefab, spawnLocation, Quaternion.identity);
             NPC npc = nPCInsatnce.GetComponent<NPC>();
-
+            npc.InitializeNPC();
 
             startingSatisfaction += npc.GetSatisfaction();
             currentSatisfaction += npc.GetSatisfaction();
@@ -56,6 +59,10 @@ public class NPCManager : MonoBehaviour
 
     public NPC GetRandomNPC()
     {
+        if (nPCs.Count == 0)
+        {
+            return null;
+        }
         return nPCs[Random.Range(0, nPCs.Count)].GetComponent<NPC>();
     }
 

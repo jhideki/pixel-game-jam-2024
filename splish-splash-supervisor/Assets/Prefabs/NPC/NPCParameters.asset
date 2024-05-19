@@ -30,4 +30,4 @@ MonoBehaviour:
   changeDirectionIntervalMax: 5
   changeDirectionIntervalMin: 4
   hottubVelocity: 0.5
-  moveSpeed: 10
+  moveSpeed: 2

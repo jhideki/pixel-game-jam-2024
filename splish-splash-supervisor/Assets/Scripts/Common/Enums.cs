@@ -38,3 +38,11 @@ public enum NPCStatus
     IcreamLine,
     EventOccuring,
 }
+
+public enum CoroutineType
+{
+    Swimming,
+    Travelling,
+    Hottub,
+    EventOccuring,
+}

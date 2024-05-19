@@ -41,7 +41,6 @@ public class MovingBlock : MonoBehaviour
     {
         if (collider.gameObject.name == "Bar")
         {
-            Debug.Log("------gay");
             velocity = new Vector2(0, rb.velocity.y * -1);
             rb.velocity = velocity;
         }
