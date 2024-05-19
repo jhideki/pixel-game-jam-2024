@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7980018301835009506}
   - component: {fileID: 4942200057255915850}
   - component: {fileID: 6864435799889299983}
+  - component: {fileID: 6442648614814093020}
   m_Layer: 0
   m_Name: NPC
   m_TagString: NPC
@@ -102,6 +103,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parameters: {fileID: 11400000, guid: 762a510ed5cebeb45aa8509c67504f3f, type: 2}
+  eventManager: {fileID: 0}
+  eventData: {fileID: 0}
+  eventLoop: {fileID: 0}
 --- !u!61 &7980018301835009506
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -219,6 +223,44 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.0001, y: 0.0001}
   m_EdgeRadius: 0
+--- !u!114 &6442648614814093020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2674345262905878763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0050e68a90655b42925ada87b802cc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nSprites:
+  - {fileID: 269521965, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: -1006189089, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: -935043186, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: -1929035447, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 2019830282, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 836414719, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  eSprites:
+  - {fileID: -148918972, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 2111436388, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 1019469350, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 815006953, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: -1594143710, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: -255467835, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  sSprites:
+  - {fileID: 716380333, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 1445800658, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 64364238, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 772165782, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 446466207, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 692771534, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  sIdleSprites: []
+  eIdleSprites: []
+  nIdleSprites: []
+  frameRate: 10
+  changeCutoff: 0
 --- !u!1 &3477783761709377264
 GameObject:
   m_ObjectHideFlags: 0
