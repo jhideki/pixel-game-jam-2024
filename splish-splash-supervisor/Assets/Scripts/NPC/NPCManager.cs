@@ -6,25 +6,24 @@ using UnityEngine;
 
 public class NPCManager : MonoBehaviour
 {
+    public List<GameObject> npcVariants = new List<GameObject>();
     private List<GameObject> nPCs = new List<GameObject>();
     private List<GameObject> icecreamLine = new List<GameObject>();
     private float startingSatisfaction = 0f;
     private float currentSatisfaction = 0f;
-    public GameObject NPCPrefab;
     public EventData eventData;
 
-    private Vector3 spawnLocation = new Vector3(12, -8, 0); // Fixed spawn location
-    public float spawnDelay = 5.0f; // Delay time in seconds between spawns
+    public Vector3 spawnLocation = new Vector3(12, -8, 0); // Fixed spawn location
+    public float spawnDelay = 4f; // Delay time in seconds between spawns
 
     public IEnumerator Spawn()
     {
         while (true)
         {
-            //GameObject nPCInsatnce = Instantiate(NPCPrefab, new Vector3(location.x, location.y, 0), Quaternion.identity);
-            GameObject nPCInsatnce = Instantiate(NPCPrefab, spawnLocation, Quaternion.identity);
+            GameObject npcPrefab = npcVariants[Random.Range(0, npcVariants.Count)];
+            GameObject nPCInsatnce = Instantiate(npcPrefab, spawnLocation, Quaternion.identity);
             NPC npc = nPCInsatnce.GetComponent<NPC>();
 
-            //npc.GetPath();
 
             startingSatisfaction += npc.GetSatisfaction();
             currentSatisfaction += npc.GetSatisfaction();

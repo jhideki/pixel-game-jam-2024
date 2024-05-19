@@ -684,28 +684,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4391782675198375103, guid: 138bfb3cd75b8d348a1c225c52ef87eb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5998260448617557424}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 138bfb3cd75b8d348a1c225c52ef87eb, type: 3}
---- !u!1 &5998260448617557423 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4391782675198375103, guid: 138bfb3cd75b8d348a1c225c52ef87eb, type: 3}
-  m_PrefabInstance: {fileID: 5998260448617557422}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5998260448617557424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5998260448617557423}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3393e258fd326b44e830c30d07bc2deb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7673367980155842842
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -722,6 +702,38 @@ PrefabInstance:
       propertyPath: NPCPrefab
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 465077081754668518, guid: b11da65b34fc7f44ca065b3593625f83, type: 3}
+      propertyPath: spawnDelay
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 465077081754668518, guid: b11da65b34fc7f44ca065b3593625f83, type: 3}
+      propertyPath: npcVariants.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 465077081754668518, guid: b11da65b34fc7f44ca065b3593625f83, type: 3}
+      propertyPath: npcVariants.Array.data[0]
+      value: 
+      objectReference: {fileID: 2674345262905878763, guid: 0da08d4574e180240bbcf22c6358186d, type: 3}
+    - target: {fileID: 465077081754668518, guid: b11da65b34fc7f44ca065b3593625f83, type: 3}
+      propertyPath: npcVariants.Array.data[1]
+      value: 
+      objectReference: {fileID: 2674345262905878763, guid: 8e746d6345165494fa9231050d4ee5bc, type: 3}
+    - target: {fileID: 465077081754668518, guid: b11da65b34fc7f44ca065b3593625f83, type: 3}
+      propertyPath: npcVariants.Array.data[2]
+      value: 
+      objectReference: {fileID: 2674345262905878763, guid: a1afadc4040ab8a43bcb27e31594412a, type: 3}
+    - target: {fileID: 465077081754668518, guid: b11da65b34fc7f44ca065b3593625f83, type: 3}
+      propertyPath: npcVariants.Array.data[3]
+      value: 
+      objectReference: {fileID: 2674345262905878763, guid: 9fb95c38e6104534885ec95b3bf6c3dd, type: 3}
+    - target: {fileID: 465077081754668518, guid: b11da65b34fc7f44ca065b3593625f83, type: 3}
+      propertyPath: npcVariants.Array.data[4]
+      value: 
+      objectReference: {fileID: 2674345262905878763, guid: 71a6a6a9b699a3747a00e99feecc6a7e, type: 3}
+    - target: {fileID: 465077081754668518, guid: b11da65b34fc7f44ca065b3593625f83, type: 3}
+      propertyPath: npcVariants.Array.data[5]
+      value: 
+      objectReference: {fileID: 2674345262905878763, guid: d7c340053ce473c4780817f73a42d0ae, type: 3}
     - target: {fileID: 4999760888762947282, guid: b11da65b34fc7f44ca065b3593625f83, type: 3}
       propertyPath: m_Name
       value: EventManager
@@ -879,6 +891,22 @@ PrefabInstance:
     - target: {fileID: 5825961493416239360, guid: fa93a947197501e40993cbed8af51d19, type: 3}
       propertyPath: m_Name
       value: PoolCollider
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230360148872840788, guid: fa93a947197501e40993cbed8af51d19, type: 3}
+      propertyPath: m_Size.x
+      value: 16.962177
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230360148872840788, guid: fa93a947197501e40993cbed8af51d19, type: 3}
+      propertyPath: m_Size.y
+      value: 7.15769
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230360148872840788, guid: fa93a947197501e40993cbed8af51d19, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.7813015
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230360148872840788, guid: fa93a947197501e40993cbed8af51d19, type: 3}
+      propertyPath: m_Offset.y
+      value: -1.018053
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
