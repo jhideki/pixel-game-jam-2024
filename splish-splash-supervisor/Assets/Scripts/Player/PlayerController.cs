@@ -4,9 +4,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5;
-   // float speedX, speedY;
+    // float speedX, speedY;
     private EventManager eventManager;
     public MiniGameController miniGameController;
+    private Animator animator;
 
     Rigidbody2D rb;
     CapsuleCollider2D capsuleCollider;
@@ -20,7 +21,7 @@ public class PlayerController : MonoBehaviour
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         rb = GetComponent<Rigidbody2D>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
-        spriteRenderer = GameObject.Find("oval").GetComponent<SpriteRenderer>();
+        spriteRenderer = GameObject.Find("Oval").GetComponent<SpriteRenderer>();
         if (capsuleCollider == null)
         {
             Debug.LogError("No CircleCollider2D found on the player object");
@@ -87,7 +88,7 @@ public class PlayerController : MonoBehaviour
         RotatePlayer();
     }
 
-     void RotatePlayer()
+    void RotatePlayer()
     {
         if (movement != Vector2.zero)
         {
@@ -104,13 +105,13 @@ public class PlayerController : MonoBehaviour
             IEvent e = eventObject.GetEvent();
             if (e.isActive)
             {
-                if(e.Type == EventType.Drowning)
+                if (e.Type == EventType.Drowning)
                 {
                     // Run minigame
                     miniGameController.StartMiniGame(e);
                     eventManager.EndEvent(collision.gameObject);
                 }
-                else if(e.Type == EventType.OverHeating)
+                else if (e.Type == EventType.OverHeating)
                 {
                     eventManager.EndEvent(collision.gameObject);
                 }
