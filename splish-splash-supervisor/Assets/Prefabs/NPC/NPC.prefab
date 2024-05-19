@@ -262,5 +262,7 @@ MonoBehaviour:
   - {fileID: 1631922952, guid: 61250cdee1867ed4d85f82d22f34e8b0, type: 3}
   - {fileID: 1631922952, guid: 61250cdee1867ed4d85f82d22f34e8b0, type: 3}
   - {fileID: 1482788282, guid: 61250cdee1867ed4d85f82d22f34e8b0, type: 3}
+  selectedSprites: []
   frameRate: 7
   changeCutoff: 0.1
+  swimOverlay: {fileID: 828435594133304766, guid: 760085e2134ac54499cc33eb83866873, type: 3}

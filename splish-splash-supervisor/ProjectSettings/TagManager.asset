@@ -9,6 +9,7 @@ TagManager:
   - Clock
   - Pool
   - Hottub
+  - MiniGame
   layers:
   - Default
   - TransparentFX
