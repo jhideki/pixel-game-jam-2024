@@ -13,11 +13,17 @@ public class EventLoop : MonoBehaviour
     public EventData eventData;
     private Text clock;
     private Dictionary<EventType, float> eventProbabilitesDict;
+    private NPCLine icecreamLine;
+    private GameObject icecreamStand;
 
     void Start()
     {
         clock = GameObject.Find("Clock").GetComponent<Text>();
         eventProbabilitesDict = new Dictionary<EventType, float>();
+
+        //Icecream ;)
+        icecreamStand = GameObject.Find("IcecreamStand");
+        icecreamLine = icecreamLine.GetComponent<NPCLine>();
 
         //For day cycles and spawning NPCs
         timer.StartTimer();
@@ -108,7 +114,7 @@ public class EventLoop : MonoBehaviour
         }
     }
 
-    public IEvent CreateEventNPC(EventType type,NPC npc)
+    public IEvent CreateEventNPC(EventType type, NPC npc)
     {
         switch (type)
         {

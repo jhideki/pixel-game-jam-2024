@@ -7,6 +7,7 @@ using UnityEngine;
 public class NPCManager : MonoBehaviour
 {
     private List<GameObject> nPCs = new List<GameObject>();
+    private List<GameObject> icecreamLine = new List<GameObject>();
     private float startingSatisfaction = 0f;
     private float currentSatisfaction = 0f;
     public GameObject NPCPrefab;
@@ -31,6 +32,21 @@ public class NPCManager : MonoBehaviour
 
             yield return new WaitForSeconds(spawnDelay);
         }
+    }
+
+    public void SendToIceCreamStand()
+    {
+        foreach (var npcObject in nPCs)
+        {
+            NPC npc = npcObject.GetComponent<NPC>();
+            if (!npc.GetIsEventOccuring() && npc.GetStatus() != NPCStatus.Travelling && npc.GetStatus() != NPCStatus.IcreamLine)
+            {
+                //npc.SetNewTargetLocation(icecreamLine.GetNextPosition());
+                icecreamLine.Add(npcObject);
+                break;
+            }
+        }
+
     }
 
     // Method to start the spawning coroutine
