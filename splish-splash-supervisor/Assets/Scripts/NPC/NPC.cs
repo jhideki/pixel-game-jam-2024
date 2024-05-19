@@ -47,8 +47,8 @@ public class NPC : MonoBehaviour
         npcManager = GameObject.Find("EventManager").GetComponent<NPCManager>();
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         eventLoop = GameObject.Find("EventManager").GetComponent<EventLoop>();
-        
-    
+
+
         name = parameters.names[Random.Range(0, parameters.names.Length)];
         health = Random.Range(parameters.minHealth, parameters.maxHealth);
         satisfaction = Random.Range(parameters.minSatisfaction, parameters.maxSatisfaction);
@@ -79,13 +79,24 @@ public class NPC : MonoBehaviour
                     StartCoroutine(Hottub());
                 }
                 break;
+            case NPCStatus.EventOccuring:
+                StartCoroutine(EventOccuring());
+                break;
         }
     }
-
+    IEnumerator EventOccuring()
+    {
+        isStatusRoutineRunning = true;
+        rb.velocity = Vector2.zero;
+        while (status == NPCStatus.EventOccuring)
+        {
+            yield return null;
+        }
+        isStatusRoutineRunning = false;
+    }
 
     IEnumerator MoveTowardsTarget()
     {
-
         isStatusRoutineRunning = true;
         //Check if queue is empty and if there is a target location, if not set new target and move towards target
         while (pathQueue.Count > 0 && targetLocation != Location.None)
@@ -145,11 +156,11 @@ public class NPC : MonoBehaviour
     }
 
 
-     IEnumerator Hottub()
+    IEnumerator Hottub()
     {
         isStatusRoutineRunning = true;
         bool assignedToHottub = false;
-        
+
         foreach (var coord in hottubCoordinates)
         {
             if (!occupiedHottubCoordinates.Contains(coord))
@@ -162,7 +173,7 @@ public class NPC : MonoBehaviour
             }
         }
 
-        if(!assignedToHottub)
+        if (!assignedToHottub)
         {
             Debug.Log("No more hottub coordinates available");
             SetNewTargetLocation(Location.Pool);
@@ -172,31 +183,23 @@ public class NPC : MonoBehaviour
         {
             float timeSpentInHottub = 0f;
             while (status == NPCStatus.Hottub)
-        {
-            timeSpentInHottub += Time.deltaTime;
-            if (timeSpentInHottub >= eventData.preheatDuration)
             {
-                IEvent overheat = eventLoop.CreateEventNPC(EventType.OverHeating,this);
-                eventManager.TriggerEvent(overheat);
-                timeSpentInHottub = 0f; // Reset the timer after overheating
+                timeSpentInHottub += Time.deltaTime;
+                if (timeSpentInHottub >= eventData.preheatDuration)
+                {
+                    IEvent overheat = eventLoop.CreateEventNPC(EventType.OverHeating, this);
+                    eventManager.TriggerEvent(overheat);
+                    timeSpentInHottub = 0f; // Reset the timer after overheating
+                }
+                yield return null;
             }
-            yield return null;
-        }
-        
+
             // Free up the coordinate when NPC leaves the hot tub
             occupiedHottubCoordinates.Remove(transform.position);
         }
 
         isStatusRoutineRunning = false;
     }
-
-    /*
-    void Overheat()
-    {
-        Debug.Log(name + " is overheating in the hot tub!");
-        LowerSatisfaction(parameters.overheatDamage);
-    }
-    */
 
     //Only triggered when exiting the box collider
     void OnTriggerExit2D(Collider2D collision)
@@ -257,8 +260,26 @@ public class NPC : MonoBehaviour
 
     public void SetNewTargetLocation(Location location)
     {
+        pathQueue.Enqueue(npcManager.spawnLocation);
         status = NPCStatus.Travelling;
         targetLocation = location;
+        switch (targetLocation)
+        {
+            case Location.Pool:
+                pathQueue.Enqueue(new Vector3(5, -8, 0));
+                pathQueue.Enqueue(new Vector3(5, -3, 0));
+                break;
+            case Location.Hottub:
+                pathQueue.Enqueue(new Vector3(13, 2, 0));
+                break;
+                //Add more destination coordinates here
+        }
+    }
+
+    public void SetNewTargetLocationCoords(Vector2Int coords)
+    {
+        pathQueue.Enqueue(npcManager.spawnLocation);
+        pathQueue.Enqueue(new Vector3(coords.x, coords.y, 0));
     }
 
 

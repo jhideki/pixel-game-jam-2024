@@ -23,7 +23,7 @@ public class EventLoop : MonoBehaviour
 
         //Icecream ;)
         icecreamStand = GameObject.Find("IcecreamStand");
-        icecreamLine = icecreamLine.GetComponent<NPCLine>();
+        icecreamLine = icecreamStand.GetComponent<NPCLine>();
 
         //For day cycles and spawning NPCs
         timer.StartTimer();

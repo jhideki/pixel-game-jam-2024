@@ -66,9 +66,6 @@ public class PlayerAnimation : MonoBehaviour
             selectedSprites = sIdleSprites;
         }
         int frame = (int)(Time.time * frameRate % 6);
-        Debug.Log("-------" + frame);
-
-
         spriteRenderer.sprite = selectedSprites[frame];
     }
     void SetSprite()

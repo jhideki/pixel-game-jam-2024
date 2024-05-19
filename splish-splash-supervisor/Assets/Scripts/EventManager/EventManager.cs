@@ -36,7 +36,7 @@ public class EventManager : MonoBehaviour
                 //npc.SetNewTargetLocation(Location.Pool);
                 break;
             case EventType.Shitting:
-               //npc.SetNewTargetLocation(Location.Pool);
+                //npc.SetNewTargetLocation(Location.Pool);
                 break;
             case EventType.Pissing:
                 //npc.SetNewTargetLocation(Location.Pool);
@@ -45,7 +45,7 @@ public class EventManager : MonoBehaviour
                 npc.SetNewTargetLocation(Location.Pool);
                 break;
             case EventType.OverHeating:
-                 npc.SetNewTargetLocation(Location.Pool);
+                npc.SetNewTargetLocation(Location.Pool);
                 break;
             case EventType.Hysteria:
                 npc.SetNewTargetLocation(Location.Pool);
@@ -53,7 +53,7 @@ public class EventManager : MonoBehaviour
             default:
                 break;
         }
-        
+
         e.isActive = false;
     }
 
@@ -73,6 +73,8 @@ public class EventManager : MonoBehaviour
         Debug.Log(newEvent.nPC.GetComponent<NPC>().GetName() + " started " + newEvent.Type);
 
         NPC npc = newEvent.nPC.GetComponent<NPC>();
+        NPCStatus previousStatus = npc.GetStatus();
+        npc.SetStatus(NPCStatus.EventOccuring);
         float elapsedTime = 0f;
         while (elapsedTime < newEvent.Duration && newEvent.isActive && npc.GetStatus() != NPCStatus.Dead)
         {
@@ -97,5 +99,6 @@ public class EventManager : MonoBehaviour
         {
             npcManager.RemoveNPC(npc.gameObject);
         }
+        npc.SetStatus(previousStatus);
     }
 }

@@ -7,10 +7,9 @@ public class PlayerController : MonoBehaviour
     // float speedX, speedY;
     private EventManager eventManager;
     public MiniGameController miniGameController;
-    private Animator animator;
 
-    Rigidbody2D rb;
-    CapsuleCollider2D capsuleCollider;
+    private Rigidbody2D rb;
+    private CapsuleCollider2D capsuleCollider;
     SpriteRenderer spriteRenderer;
 
     private Vector2 movement = Vector2.zero;
@@ -97,7 +96,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnCollisionsEnter2D(Collision2D collision)
+    void OnCapsolCollisionsEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Event")
         {
