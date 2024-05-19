@@ -66,7 +66,7 @@ public class NPCAnimation : MonoBehaviour
         lastPosition = transform.position;
 
         int frame = (int)(Time.time * frameRate % 5);
-        Debug.Log("----------- fram: " + frame);
+        //Debug.Log("----------- fram: " + frame);
 
         spriteRenderer.sprite = selectedSprites[frame];
     }
