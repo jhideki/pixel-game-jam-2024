@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6864435799889299983}
   - component: {fileID: 6442648614814093020}
   m_Layer: 0
-  m_Name: NPC
+  m_Name: NPC 4
   m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -235,32 +235,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nSprites:
-  - {fileID: 269521965, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: -1006189089, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: -935043186, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: -1929035447, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: 2019830282, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: 836414719, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 63332381, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: -1427219066, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 1568119941, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: -515974688, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 46904132, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 778692578, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
   eSprites:
-  - {fileID: -148918972, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: 2111436388, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: 1019469350, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: 815006953, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: -1594143710, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: -255467835, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 1936158266, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 1589744878, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: -1939306806, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: -1111719835, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 444707739, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 1899423418, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
   sSprites:
-  - {fileID: 716380333, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: 1445800658, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: 64364238, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: 772165782, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: 446466207, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
-  - {fileID: 692771534, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: -1174827296, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: -805595848, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: 1014233082, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: -2019818278, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: -110320632, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
+  - {fileID: -541122862, guid: 3d9759c94593f754d8c71f4658f637bb, type: 3}
   sIdleSprites:
-  - {fileID: 1482788282, guid: 61250cdee1867ed4d85f82d22f34e8b0, type: 3}
-  - {fileID: -1676218829, guid: 61250cdee1867ed4d85f82d22f34e8b0, type: 3}
-  - {fileID: -2099700929, guid: 61250cdee1867ed4d85f82d22f34e8b0, type: 3}
-  - {fileID: 1631922952, guid: 61250cdee1867ed4d85f82d22f34e8b0, type: 3}
-  - {fileID: 1631922952, guid: 61250cdee1867ed4d85f82d22f34e8b0, type: 3}
-  - {fileID: 1482788282, guid: 61250cdee1867ed4d85f82d22f34e8b0, type: 3}
+  - {fileID: -1691730119, guid: f0e6a14b3c09667439b802bcef7f5175, type: 3}
+  - {fileID: 1822902054, guid: f0e6a14b3c09667439b802bcef7f5175, type: 3}
+  - {fileID: -1718069293, guid: f0e6a14b3c09667439b802bcef7f5175, type: 3}
+  - {fileID: -438149952, guid: f0e6a14b3c09667439b802bcef7f5175, type: 3}
+  - {fileID: -438149952, guid: f0e6a14b3c09667439b802bcef7f5175, type: 3}
+  - {fileID: -1691730119, guid: f0e6a14b3c09667439b802bcef7f5175, type: 3}
   frameRate: 7
   changeCutoff: 0.1

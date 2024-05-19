@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.enabled = false;
         }
 
-        RotatePlayer();
+        //RotatePlayer();
     }
 
     void RotatePlayer()
