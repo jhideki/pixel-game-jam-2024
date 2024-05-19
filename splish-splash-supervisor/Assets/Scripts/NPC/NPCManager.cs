@@ -19,6 +19,7 @@ public class NPCManager : MonoBehaviour
     public float spawnDelay = 100f; // Delay time in seconds between spawns
     private GameObject icecreamStand;
     private NPCLine icecreamLine;
+    public float icecreamStandDelay = 5f;
 
     public IEnumerator Spawn()
     {
@@ -51,12 +52,11 @@ public class NPCManager : MonoBehaviour
             NPC npc = GetRandomNPC();
             if (!npc.GetIsEventOccuring() && npc.GetStatus() == NPCStatus.Swimming || npc.GetStatus() == NPCStatus.Hottub && !icecreamLine.IsFull())
             {
-                Debug.Log("----- Sending to icecream standl");
                 icecreamLine.EnqueueLine(npc.gameObject);
                 npc.SetNewTargetLocationCoords(icecreamLine.GetNextLocation(), Location.IcecreamStand);
 
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(icecreamStandDelay);
         }
 
     }

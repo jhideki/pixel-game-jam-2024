@@ -63,7 +63,7 @@ public class EventLoop : MonoBehaviour
             switch (npc.GetStatus())
             {
                 case NPCStatus.Swimming:
-                    //StartRandomPoolEvent(npc);
+                    StartRandomPoolEvent(npc);
                     break;
                 default:
                     break;
