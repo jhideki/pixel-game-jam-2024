@@ -92,5 +92,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bb0641ec705a1a468d5e6d67adc9ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NPCPrefab: {fileID: 0}
+  npcVariants:
+  - {fileID: 2674345262905878763, guid: 0da08d4574e180240bbcf22c6358186d, type: 3}
+  - {fileID: 2674345262905878763, guid: 8e746d6345165494fa9231050d4ee5bc, type: 3}
+  - {fileID: 2674345262905878763, guid: a1afadc4040ab8a43bcb27e31594412a, type: 3}
+  - {fileID: 2674345262905878763, guid: 9fb95c38e6104534885ec95b3bf6c3dd, type: 3}
+  - {fileID: 2674345262905878763, guid: 71a6a6a9b699a3747a00e99feecc6a7e, type: 3}
+  - {fileID: 2674345262905878763, guid: d7c340053ce473c4780817f73a42d0ae, type: 3}
   eventData: {fileID: 11400000, guid: 794d140ec0060d249ac1c6c089f77c91, type: 2}
+  spawnLocation: {x: 12, y: -8, z: 0}
+  spawnDelay: 4

@@ -13,23 +13,18 @@ public class PlayerController : MonoBehaviour
     SpriteRenderer spriteRenderer;
 
     private Vector2 movement = Vector2.zero;
+    private bool isCollidingEvent;
+    private GameObject currentEvent;
+    private NPCManager npcManager;
 
     void Start()
     {
+        isCollidingEvent = false;
         miniGameController = GameObject.Find("MiniGameController").GetComponent<MiniGameController>();
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+        npcManager = GameObject.Find("EventManager").GetComponent<NPCManager>();
         rb = GetComponent<Rigidbody2D>();
-        capsuleCollider = GetComponent<CapsuleCollider2D>();
         spriteRenderer = GameObject.Find("Oval").GetComponent<SpriteRenderer>();
-        if (capsuleCollider == null)
-        {
-            Debug.LogError("No CircleCollider2D found on the player object");
-        }
-        else
-        {
-            capsuleCollider.enabled = false; // Make sure the collider is initially disabled
-        }
-
         if (spriteRenderer == null)
         {
             Debug.LogError("No SpriteRenderer found on the player object or its children");
@@ -48,6 +43,10 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(speedX, speedY);
         */
         // Capture input and lock movement to one direction
+        if (isCollidingEvent && Input.GetKeyDown(KeyCode.Space))
+        {
+            EndEvent();
+        }
 
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
@@ -75,45 +74,55 @@ public class PlayerController : MonoBehaviour
         // Enable the collider when the player is whistling
         if (Input.GetKey(KeyCode.Space))
         {
-            capsuleCollider.enabled = true;
+            if (isCollidingEvent)
+            {
+                EndEvent();
+            }
             spriteRenderer.enabled = true;
         }
         else
         {
-            capsuleCollider.enabled = false;
             spriteRenderer.enabled = false;
         }
 
         //RotatePlayer();
     }
 
-    void RotatePlayer()
-    {
-        if (movement != Vector2.zero)
-        {
-            float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg;
-            rb.rotation = angle;
-        }
-    }
-
-    void OnCapsolCollisionsEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Event")
         {
-            EventObject eventObject = collision.gameObject.GetComponent<EventObject>();
-            IEvent e = eventObject.GetEvent();
-            if (e.isActive)
+            isCollidingEvent = true;
+            currentEvent = collision.gameObject;
+        }
+    }
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Event")
+        {
+            isCollidingEvent = false;
+            currentEvent = collision.gameObject;
+        }
+    }
+    private void EndEvent()
+    {
+        EventObject eventObject = currentEvent.GetComponent<EventObject>();
+        IEvent e = eventObject.GetEvent();
+        if (e.isActive)
+        {
+            if (e.Type == EventType.Drowning)
             {
-                if (e.Type == EventType.Drowning)
-                {
-                    // Run minigame
-                    miniGameController.StartMiniGame(e);
-                    eventManager.EndEvent(collision.gameObject);
-                }
-                else if (e.Type == EventType.OverHeating)
-                {
-                    eventManager.EndEvent(collision.gameObject);
-                }
+                // Run minigame
+                miniGameController.StartMiniGame(e);
+                eventManager.EndEvent(currentEvent);
+            }
+            else if (e.Type == EventType.OverHeating)
+            {
+                eventManager.EndEvent(currentEvent);
+            }
+            else
+            {
+                eventManager.EndEvent(currentEvent);
             }
         }
     }
