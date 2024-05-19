@@ -103,9 +103,16 @@ public class PlayerController : MonoBehaviour
             IEvent e = eventObject.GetEvent();
             if (e.isActive)
             {
-                // Run minigame
-                miniGameController.StartMiniGame(e);
-                eventManager.EndEvent(collision.gameObject);
+                if(e.Type == EventType.Drowning)
+                {
+                    // Run minigame
+                    miniGameController.StartMiniGame(e);
+                    eventManager.EndEvent(collision.gameObject);
+                }
+                else if(e.Type == EventType.OverHeating)
+                {
+                    eventManager.EndEvent(collision.gameObject);
+                }
             }
         }
     }

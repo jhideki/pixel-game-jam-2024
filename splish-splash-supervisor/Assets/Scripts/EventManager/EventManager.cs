@@ -25,6 +25,7 @@ public class EventManager : MonoBehaviour
 
     }
 
+    
     public void EndEvent(GameObject eventObject)
     {
         IEvent e = eventObject.GetComponent<IEvent>();

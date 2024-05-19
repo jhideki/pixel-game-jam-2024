@@ -165,7 +165,7 @@ public class NPC : MonoBehaviour
         if(!assignedToHottub)
         {
             Debug.Log("No more hottub coordinates available");
-            SetSpawnTargetLocation();
+            SetNewTargetLocation(Location.Pool);
             yield break;
         }
         else
@@ -233,7 +233,7 @@ public class NPC : MonoBehaviour
         //targetLocation = (Location)Random.Range(0, System.Enum.GetValues(typeof(Location)).Length - 1);
 
         float randomValue = Random.Range(0f, 1f);
-        if (randomValue < 0.0f)
+        if (randomValue < 0.8f)
         {
             targetLocation = Location.Pool;
         }
