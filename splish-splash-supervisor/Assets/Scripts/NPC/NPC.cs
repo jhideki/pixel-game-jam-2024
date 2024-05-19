@@ -33,14 +33,15 @@ public class NPC : MonoBehaviour
 
     private static List<Vector3> hottubCoordinates = new List<Vector3>
     {
-        new Vector3(14, 2, 0),
-        new Vector3(14, 3, 0),
-        new Vector3(13, 3, 0),
-        new Vector3(12, 3, 0),
-        new Vector3(12, 2, 0),
-        new Vector3(12, 1, 0),
-        new Vector3(13, 1, 0),
-        new Vector3(14, 1, 0),
+        new Vector3(12, -7, 0),
+        new Vector3(11, -7, 0),
+        new Vector3(10, -7, 0),
+        new Vector3(10, -6, 0),
+        new Vector3(11, -6, 0),
+        new Vector3(12, -6, 0),
+        new Vector3(12, -5, 0),
+        new Vector3(11, -5, 0),
+        new Vector3(10, -5, 0),
         // Add more coordinates as needed
     };
 
@@ -113,6 +114,18 @@ public class NPC : MonoBehaviour
                     currentCoroutine = StartCoroutine(EventOccuring());
                 }
                 break;
+            case NPCStatus.IcreamLine:
+                if (currentCoroutine != null && coroutineType != CoroutineType.IcecreamLine)
+                {
+                    RemoveHottub();
+                    StopCoroutine(currentCoroutine);
+                    currentCoroutine = StartCoroutine(IcecreamLine());
+                }
+                else if (currentCoroutine == null)
+                {
+                    currentCoroutine = StartCoroutine(IcecreamLine());
+                }
+                break;
         }
     }
     private void RemoveHottub()
@@ -121,6 +134,17 @@ public class NPC : MonoBehaviour
         {
             npcManager.occupiedHottubCoordinates.Remove(hotTubPosition);
             hotTubPosition = Vector3.zero;
+        }
+    }
+
+    IEnumerator IcecreamLine()
+    {
+        coroutineType = CoroutineType.IcecreamLine;
+        //deal 2 damage every 5 seconds
+        while (status == NPCStatus.IcreamLine)
+        {
+            npcManager.DealSatisfactionDamage(2f, this);
+            yield return new WaitForSeconds(5f);
         }
     }
     IEnumerator EventOccuring()
@@ -158,6 +182,9 @@ public class NPC : MonoBehaviour
                 break;
             case Location.Pool:
                 status = NPCStatus.Swimming;
+                break;
+            case Location.IcecreamStand:
+                status = NPCStatus.IcreamLine;
                 break;
         }
 
@@ -227,8 +254,8 @@ public class NPC : MonoBehaviour
                 timeSpentInHottub += Time.deltaTime;
                 if (timeSpentInHottub >= eventData.preheatDuration)
                 {
-                    /*IEvent overheat = eventLoop.CreateEventNPC(EventType.OverHeating, this);
-                    eventManager.TriggerEvent(overheat);*/
+                    IEvent overheat = eventLoop.CreateEventNPC(EventType.OverHeating, this);
+                    eventManager.TriggerEvent(overheat);
                     timeSpentInHottub = 0f; // Reset the timer after overheating
                 }
                 yield return null;
@@ -278,11 +305,11 @@ public class NPC : MonoBehaviour
         switch (targetLocation)
         {
             case Location.Pool:
-                pathQueue.Enqueue(new Vector3(5, -8, 0));
-                pathQueue.Enqueue(new Vector3(5, -3, 0));
+                pathQueue.Enqueue(new Vector3(-4, -8, 0));
+                pathQueue.Enqueue(new Vector3(-4, -7, 0));
                 break;
             case Location.Hottub:
-                pathQueue.Enqueue(new Vector3(13, 2, 0));
+                pathQueue.Enqueue(new Vector3(12, -7, 0));
                 break;
                 //Add more destination coordinates here
         }
@@ -294,23 +321,23 @@ public class NPC : MonoBehaviour
         status = NPCStatus.Travelling;
         targetLocation = location;
 
-        pathQueue.Enqueue(npcManager.spawnLocation);
         switch (targetLocation)
         {
             case Location.Pool:
-                pathQueue.Enqueue(new Vector3(5, -8, 0));
-                pathQueue.Enqueue(new Vector3(5, -3, 0));
+                pathQueue.Enqueue(new Vector3(-4, -8, 0));
+                pathQueue.Enqueue(new Vector3(-4, -7, 0));
                 break;
             case Location.Hottub:
-                pathQueue.Enqueue(new Vector3(13, 2, 0));
+                pathQueue.Enqueue(new Vector3(12, -7, 0));
                 break;
                 //Add more destination coordinates here
         }
     }
 
-    public void SetNewTargetLocationCoords(Vector2Int coords)
+    public void SetNewTargetLocationCoords(Vector2Int coords, Location location)
     {
-        pathQueue.Enqueue(npcManager.spawnLocation);
+        targetLocation = location;
+        status = NPCStatus.Travelling;
         pathQueue.Enqueue(new Vector3(coords.x, coords.y, 0));
     }
 

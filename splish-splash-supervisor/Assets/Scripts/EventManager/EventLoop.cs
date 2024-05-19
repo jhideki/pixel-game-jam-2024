@@ -21,9 +21,6 @@ public class EventLoop : MonoBehaviour
         clock = GameObject.Find("Clock").GetComponent<Text>();
         eventProbabilitesDict = new Dictionary<EventType, float>();
 
-        //Icecream ;)
-        icecreamStand = GameObject.Find("IcecreamStand");
-        icecreamLine = icecreamStand.GetComponent<NPCLine>();
 
         //For day cycles and spawning NPCs
         timer.StartTimer();
@@ -37,6 +34,7 @@ public class EventLoop : MonoBehaviour
         StartCoroutine(RunProbabilites());
         StartCoroutine(ManageSatisfaction());
         StartCoroutine(UpdateClock());
+        npcManager.StartIceCreamStand();
     }
 
     IEnumerator UpdateClock()
@@ -46,9 +44,7 @@ public class EventLoop : MonoBehaviour
             clock.text = timer.GetCurrentTime();
             yield return new WaitForSeconds(1);
         }
-
     }
-
 
     IEnumerator ManageSatisfaction()
     {
@@ -67,7 +63,7 @@ public class EventLoop : MonoBehaviour
             switch (npc.GetStatus())
             {
                 case NPCStatus.Swimming:
-                    StartRandomPoolEvent(npc);
+                    //StartRandomPoolEvent(npc);
                     break;
                 default:
                     break;

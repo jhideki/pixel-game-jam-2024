@@ -104,7 +104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parameters: {fileID: 11400000, guid: 762a510ed5cebeb45aa8509c67504f3f, type: 2}
   eventManager: {fileID: 0}
-  eventData: {fileID: 0}
+  eventData: {fileID: 11400000, guid: 794d140ec0060d249ac1c6c089f77c91, type: 2}
   eventLoop: {fileID: 0}
 --- !u!61 &22082255898389231
 BoxCollider2D:

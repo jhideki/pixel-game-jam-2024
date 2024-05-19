@@ -10,6 +10,7 @@ TagManager:
   - Pool
   - Hottub
   - MiniGame
+  - IcecreamStand
   layers:
   - Default
   - TransparentFX

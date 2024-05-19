@@ -1,3 +1,4 @@
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -16,6 +17,8 @@ public class PlayerController : MonoBehaviour
     private bool isCollidingEvent;
     private GameObject currentEvent;
     private NPCManager npcManager;
+    private bool isAtIcecreamStand;
+    private NPCLine icecreamLine;
 
     void Start()
     {
@@ -23,6 +26,7 @@ public class PlayerController : MonoBehaviour
         miniGameController = GameObject.Find("MiniGameController").GetComponent<MiniGameController>();
         eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         npcManager = GameObject.Find("EventManager").GetComponent<NPCManager>();
+        icecreamLine = GameObject.Find("IcecreamStand").GetComponent<NPCLine>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GameObject.Find("Oval").GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
@@ -46,6 +50,11 @@ public class PlayerController : MonoBehaviour
         if (isCollidingEvent && Input.GetKeyDown(KeyCode.Space))
         {
             EndEvent();
+        }
+
+        if (isAtIcecreamStand && Input.GetKeyDown(KeyCode.E))
+        {
+            icecreamLine.DequeueLine();
         }
 
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
@@ -95,6 +104,10 @@ public class PlayerController : MonoBehaviour
             isCollidingEvent = true;
             currentEvent = collision.gameObject;
         }
+        else if (collision.gameObject.tag == "IcecreamStand")
+        {
+            isAtIcecreamStand = true;
+        }
     }
     void OnTriggerExit2D(Collider2D collision)
     {
@@ -102,6 +115,10 @@ public class PlayerController : MonoBehaviour
         {
             isCollidingEvent = false;
             currentEvent = collision.gameObject;
+        }
+        else if (collision.gameObject.tag == "IcecreamStand")
+        {
+            isAtIcecreamStand = false;
         }
     }
     private void EndEvent()
