@@ -58,6 +58,69 @@ public class EventManager : MonoBehaviour
         e.isActive = false;
     }
 
+    public void EndEventIEvent(IEvent e)
+    {
+        NPC npc = e.nPC;
+        //TODO: call npc functions to change status of  npc.
+        //E.g., npc.setStatus(travelling) + npc.setNewTargetLocation()
+        switch (e.Type)
+        {
+            case EventType.Drowning:
+                npc.SetNewTargetLocation(Location.Pool);
+                break;
+            case EventType.Shitting:
+                npc.SetNewTargetLocation(Location.Hottub);
+                break;
+            case EventType.Pissing:
+                npc.SetNewTargetLocation(Location.Hottub);
+                break;
+            case EventType.Running:
+                npc.SetNewTargetLocation(Location.Hottub);
+                break;
+            case EventType.OverHeating:
+                npc.SetNewTargetLocation(Location.Pool);
+                break;
+            case EventType.Hysteria:
+                npc.SetNewTargetLocation(Location.Hottub);
+                break;
+            default:
+                break;
+        }
+
+        e.isActive = false;
+    }
+
+    public void EndEventLose(IEvent e)
+    {
+        NPC npc = e.nPC;
+        //TODO: call npc functions to change status of  npc.
+        //E.g., npc.setStatus(travelling) + npc.setNewTargetLocation()
+        switch (e.Type)
+        {
+            case EventType.Drowning:
+                npc.SetStatus(NPCStatus.Dead);
+                break;
+            case EventType.Shitting:
+                npc.SetNewTargetLocation(Location.Hottub);
+                break;
+            case EventType.Pissing:
+                npc.SetNewTargetLocation(Location.Hottub);
+                break;
+            case EventType.Running:
+                npc.SetNewTargetLocation(Location.Hottub);
+                break;
+            case EventType.OverHeating:
+                npc.SetNewTargetLocation(Location.Pool);
+                break;
+            case EventType.Hysteria:
+                npc.SetNewTargetLocation(Location.Hottub);
+                break;
+            default:
+                break;
+        }
+
+        e.isActive = false;
+    }
 
     public GameObject TriggerEvent(IEvent newEvent)
     {
@@ -102,7 +165,7 @@ public class EventManager : MonoBehaviour
         Destroy(eventObject);
         if (npc.GetStatus() == NPCStatus.Dead)
         {
-            Instantiate(npcDeath, npc.transform.position, Quaternion.identity);
+            GameObject death = Instantiate(npcDeath, npc.transform.position, Quaternion.identity);
             npcManager.RemoveNPC(npc.gameObject);
         }
         else if (npc.GetStatus() != NPCStatus.Travelling)

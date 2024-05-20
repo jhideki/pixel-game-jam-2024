@@ -12,6 +12,8 @@ TagManager:
   - MiniGame
   - IcecreamStand
   - RunningArea
+  - MovingBlock
+  - Bar
   layers:
   - Default
   - TransparentFX

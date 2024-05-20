@@ -8,6 +8,8 @@ public class NPCAnimation : MonoBehaviour
     public List<Sprite> eSprites;
     public List<Sprite> sSprites;
 
+    private WaterOverlay waterOverlay;
+
     public List<Sprite> sIdleSprites;
     public List<Sprite> selectedSprites;
     private SpriteRenderer spriteRenderer;
@@ -32,12 +34,15 @@ public class NPCAnimation : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         selectedSprites = eSprites;
         overlay = transform.Find("SwimOverlay").GetComponent<swimOverlay>();
+        waterOverlay = transform.Find("WaterOverlay").GetComponent<WaterOverlay>();
     }
 
     void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "Pool" || collider.gameObject.tag == "Hottub")
         {
+
+            waterOverlay.SetInWater(true);
             overlay.SetInWater(true);
         }
     }
@@ -47,6 +52,7 @@ public class NPCAnimation : MonoBehaviour
         if (collider.gameObject.tag == "Pool" || collider.gameObject.tag == "Hottub")
         {
             overlay.SetInWater(false);
+            waterOverlay.SetInWater(false);
         }
     }
 
