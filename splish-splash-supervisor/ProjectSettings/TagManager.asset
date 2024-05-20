@@ -11,6 +11,7 @@ TagManager:
   - Hottub
   - MiniGame
   - IcecreamStand
+  - RunningArea
   layers:
   - Default
   - TransparentFX

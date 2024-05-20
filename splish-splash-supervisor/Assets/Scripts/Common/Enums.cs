@@ -25,6 +25,7 @@ public enum Location
     Hottub,
     Pool,
     IcecreamStand,
+    RunningArea,
     None,
 }
 
@@ -37,6 +38,7 @@ public enum NPCStatus
     Dead,
     IcreamLine,
     EventOccuring,
+    Running,
 }
 
 public enum CoroutineType
@@ -46,4 +48,5 @@ public enum CoroutineType
     Hottub,
     EventOccuring,
     IcecreamLine,
+    Running,
 }

@@ -74,8 +74,12 @@ public class EventManager : MonoBehaviour
         Debug.Log(newEvent.nPC.GetComponent<NPC>().GetName() + " started " + newEvent.Type);
 
         NPC npc = newEvent.nPC.GetComponent<NPC>();
+
+        if (newEvent.Type != EventType.Running)
+        {
+            npc.SetStatus(NPCStatus.EventOccuring);
+        }
         NPCStatus previousStatus = npc.GetStatus();
-        npc.SetStatus(NPCStatus.EventOccuring);
         float elapsedTime = 0f;
         while (elapsedTime < newEvent.Duration && newEvent.isActive && npc.GetStatus() != NPCStatus.Dead)
         {

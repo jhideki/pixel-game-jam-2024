@@ -1,13 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public class NPC : MonoBehaviour
 {
     //Constant parameters
     public NPCParameters parameters;
-
     public EventManager eventManager;
     public EventData eventData;
     public EventLoop eventLoop;
@@ -127,6 +126,48 @@ public class NPC : MonoBehaviour
                     currentCoroutine = StartCoroutine(IcecreamLine());
                 }
                 break;
+            case NPCStatus.Running:
+                if (currentCoroutine != null && coroutineType != CoroutineType.Running)
+                {
+                    RemoveHottub();
+                    StopCoroutine(currentCoroutine);
+                    currentCoroutine = StartCoroutine(Running());
+                }
+                else if (currentCoroutine == null)
+                {
+                    currentCoroutine = StartCoroutine(Running());
+                }
+                break;
+        }
+    }
+
+    IEnumerator Running()
+    {
+        coroutineType = CoroutineType.Running;
+
+        IEvent running = eventLoop.CreateEventNPC(EventType.Running, this);
+        eventManager.TriggerEvent(running);
+        while (status == NPCStatus.Running)
+        {
+            Direction randomDirection = (Direction)Random.Range(0, System.Enum.GetValues(typeof(Direction)).Length);
+            Vector3 velocity = new Vector3(0f, 0f, 0f);
+            switch (randomDirection)
+            {
+                case Direction.North:
+                    velocity.y = parameters.runVelocity;
+                    break;
+                case Direction.South:
+                    velocity.y = -parameters.runVelocity;
+                    break;
+                case Direction.West:
+                    velocity.x = -parameters.runVelocity;
+                    break;
+                case Direction.East:
+                    velocity.x = parameters.runVelocity;
+                    break;
+            }
+            rb.velocity = velocity;
+            yield return new WaitForSeconds(Random.Range(parameters.changeDirectionIntervalMin, parameters.changeDirectionIntervalMax));
         }
     }
     private void RemoveHottub()
@@ -186,6 +227,9 @@ public class NPC : MonoBehaviour
                 break;
             case Location.IcecreamStand:
                 status = NPCStatus.IcreamLine;
+                break;
+            case Location.RunningArea:
+                status = NPCStatus.Running;
                 break;
         }
 
@@ -278,6 +322,12 @@ public class NPC : MonoBehaviour
                     newVelocity *= -1;
                 }
                 break;
+            case NPCStatus.Running:
+                if (collision.gameObject.tag == "RunningArea")
+                {
+                    newVelocity *= -1;
+                }
+                break;
             //Allow npc to pass through if travelling
             case NPCStatus.Travelling:
                 break;
@@ -330,6 +380,9 @@ public class NPC : MonoBehaviour
                 break;
             case Location.Hottub:
                 pathQueue.Enqueue(new Vector3(12, -7, 0));
+                break;
+            case Location.RunningArea:
+                pathQueue.Enqueue(new Vector3(-16, -1, 0));
                 break;
                 //Add more destination coordinates here
         }

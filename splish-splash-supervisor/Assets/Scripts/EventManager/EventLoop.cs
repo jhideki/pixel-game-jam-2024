@@ -21,12 +21,12 @@ public class EventLoop : MonoBehaviour
         clock = GameObject.Find("Clock").GetComponent<Text>();
         eventProbabilitesDict = new Dictionary<EventType, float>();
 
-
         //For day cycles and spawning NPCs
         timer.StartTimer();
 
         //Probabilty dictionary
-        eventProbabilitesDict.Add(EventType.Drowning, eventData.drowningProbability);
+        //eventProbabilitesDict.Add(EventType.Drowning, eventData.drowningProbability);
+        eventProbabilitesDict.Add(EventType.Running, eventData.runningProbability);
 
         //Will remove this block later (Will be replaced by SpawnNPCs)
         npcManager.StartSpawning();
@@ -81,8 +81,15 @@ public class EventLoop : MonoBehaviour
             {
                 if (rand <= entry.Value)
                 {
-                    IEvent e = CreateEvent(entry.Key, npc);
-                    eventManager.TriggerEvent(e);
+                    if (entry.Key == EventType.Running)
+                    {
+                        npc.SetNewTargetLocation(Location.RunningArea);
+                    }
+                    else
+                    {
+                        IEvent e = CreateEvent(entry.Key, npc);
+                        eventManager.TriggerEvent(e);
+                    }
                 }
             }
         }

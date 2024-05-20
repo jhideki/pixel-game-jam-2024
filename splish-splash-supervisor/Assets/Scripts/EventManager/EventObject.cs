@@ -23,6 +23,14 @@ public class EventObject : MonoBehaviour
         transform.position = new Vector3(e.location.x, e.location.y, 0);
     }
 
+    void Update()
+    {
+        if (e.Type == EventType.Running)
+        {
+            transform.position = e.nPC.transform.position;
+        }
+    }
+
     public IEvent GetEvent()
     {
         return e;
