@@ -20,7 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 7ba9446d42243264aa53ddf599d471d1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Dev/DrowningMiniGame.unity
     guid: 5dcd78c2ffb222b41b243a5995478e87
   - enabled: 1
