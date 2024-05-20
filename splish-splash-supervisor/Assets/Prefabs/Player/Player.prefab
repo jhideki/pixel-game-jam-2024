@@ -263,6 +263,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: SwimOverlay
       objectReference: {fileID: 0}
+    - target: {fileID: 3247010951894176859, guid: 0fd1d0488cc544e4497bd4a6ea687f63, type: 3}
+      propertyPath: m_SortingLayer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3247010951894176859, guid: 0fd1d0488cc544e4497bd4a6ea687f63, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3247010951894176859, guid: 0fd1d0488cc544e4497bd4a6ea687f63, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1811817089
+      objectReference: {fileID: 0}
     - target: {fileID: 7218153340973889561, guid: 0fd1d0488cc544e4497bd4a6ea687f63, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

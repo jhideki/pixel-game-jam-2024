@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ae48813f2a015047ac7de185be6a284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcDeath: {fileID: 0}
+  npcDeath: {fileID: 2952373952645530122, guid: 3c476efcab2426c4c998d2ffa8f3f4ef, type: 3}
   eventPrefab: {fileID: 4668592122272107493, guid: 19d7c01dac954c7498621521a7bfe0c8, type: 3}
   npcManager: {fileID: 465077081754668518}
   activeEvents: []
