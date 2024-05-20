@@ -45,4 +45,5 @@ public enum CoroutineType
     Travelling,
     Hottub,
     EventOccuring,
+    IcecreamLine,
 }

@@ -7,6 +7,18 @@ public class MiniGameController : MonoBehaviour
     private MiniGame currentMiniGame;
     //Example of how to initialize a minigame based off an event
     public GameObject drowningMiniGamePrefab;
+    private GameObject miniGameCanvas;
+    void Start()
+    {
+
+        miniGameCanvas = GameObject.Find("Canvas/MiniGame");
+        miniGameCanvas.SetActive(false);
+    }
+
+    public bool IsRunning()
+    {
+        return currentMiniGame != null;
+    }
     //TODO: Add more minigames prefabs here
     public void StartMiniGame(IEvent e)
     {
@@ -17,6 +29,7 @@ public class MiniGameController : MonoBehaviour
             contains a function called Initialize() that returns type MiniGame*/
             case EventType.Drowning:
                 //Maybe change this to spawn the object as a child of the MiniGameController game object
+                miniGameCanvas.SetActive(true);
                 currentMiniGameObject = Instantiate(drowningMiniGamePrefab, new Vector3(e.location.x, e.location.y, 0), Quaternion.identity);
                 currentMiniGame = currentMiniGameObject.GetComponent<DrowningMiniGame>().Initialize();
                 break;
@@ -45,13 +58,14 @@ public class MiniGameController : MonoBehaviour
         {
             if (currentMiniGame.GetStatus() == MiniGameStatus.Win)
             {
-                //TODO: when player wins mingame
+                miniGameCanvas.SetActive(false);
                 Destroy(currentMiniGameObject);
             }
 
             if (currentMiniGame.GetStatus() == MiniGameStatus.Lose)
             {
-                //TODO: when player loses minigame
+                miniGameCanvas.SetActive(false);
+                Destroy(currentMiniGameObject);
                 currentMiniGame.SetStatus(MiniGameStatus.Complete);
             }
         }

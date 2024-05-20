@@ -8,7 +8,6 @@ public class NPCManager : MonoBehaviour
 {
     public List<GameObject> npcVariants = new List<GameObject>();
     private List<GameObject> nPCs = new List<GameObject>();
-    private List<GameObject> icecreamLine = new List<GameObject>();
     private float startingSatisfaction = 0f;
     private float currentSatisfaction = 0f;
     public EventData eventData;
@@ -17,7 +16,10 @@ public class NPCManager : MonoBehaviour
 
 
     public Vector3 spawnLocation = new Vector3(12, -8, 0); // Fixed spawn location
-    public float spawnDelay = 4f; // Delay time in seconds between spawns
+    public float spawnDelay = 100f; // Delay time in seconds between spawns
+    private GameObject icecreamStand;
+    private NPCLine icecreamLine;
+    public float icecreamStandDelay = 5f;
 
     public IEnumerator Spawn()
     {
@@ -35,18 +37,27 @@ public class NPCManager : MonoBehaviour
             yield return new WaitForSeconds(spawnDelay);
         }
     }
-
-    public void SendToIceCreamStand()
+    public void StartIceCreamStand()
     {
-        foreach (var npcObject in nPCs)
+        //Icecream ;)
+        icecreamStand = GameObject.Find("IcecreamStand");
+        icecreamLine = icecreamStand.GetComponent<NPCLine>();
+        StartCoroutine(SendToIceCreamStand());
+    }
+
+    IEnumerator SendToIceCreamStand()
+    {
+        while (true)
         {
-            NPC npc = npcObject.GetComponent<NPC>();
-            if (!npc.GetIsEventOccuring() && npc.GetStatus() != NPCStatus.Travelling && npc.GetStatus() != NPCStatus.IcreamLine)
+            NPC npc = GetRandomNPC();
+            if (!npc.GetIsEventOccuring() && npc.GetStatus() == NPCStatus.Swimming || npc.GetStatus() == NPCStatus.Hottub && !icecreamLine.IsFull())
             {
-                //npc.SetNewTargetLocation(icecreamLine.GetNextPosition());
-                icecreamLine.Add(npcObject);
-                break;
+                icecreamLine.EnqueueLine(npc.gameObject);
+                npc.SetNewTargetLocationCoords(icecreamLine.GetNextLocation(), Location.IcecreamStand);
+                npc.SetIcecreamPosition(icecreamLine.GetNextLocation());
+
             }
+            yield return new WaitForSeconds(icecreamStandDelay);
         }
 
     }

@@ -7,7 +7,7 @@ public class NPCAnimation : MonoBehaviour
     public List<Sprite> nSprites;
     public List<Sprite> eSprites;
     public List<Sprite> sSprites;
-    
+
     public List<Sprite> sIdleSprites;
     public List<Sprite> selectedSprites;
     private SpriteRenderer spriteRenderer;
@@ -22,6 +22,7 @@ public class NPCAnimation : MonoBehaviour
 
     private Vector3 lastPosition;
     private Vector3 direction;
+    private swimOverlay overlay;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +31,23 @@ public class NPCAnimation : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         selectedSprites = eSprites;
+        overlay = transform.Find("SwimOverlay").GetComponent<swimOverlay>();
+    }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.gameObject.tag == "Pool" || collider.gameObject.tag == "Hottub")
+        {
+            overlay.SetInWater(true);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D collider)
+    {
+        if (collider.gameObject.tag == "Pool" || collider.gameObject.tag == "Hottub")
+        {
+            overlay.SetInWater(false);
+        }
     }
 
     // Update is called once per frame
@@ -76,6 +94,7 @@ public class NPCAnimation : MonoBehaviour
         lastPosition = transform.position;
 
         int frame = (int)(Time.time * frameRate % 5);
+
 
         spriteRenderer.sprite = selectedSprites[frame];
     }
