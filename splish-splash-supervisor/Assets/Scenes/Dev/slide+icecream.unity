@@ -348,21 +348,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1065865569191494913, guid: b21dbbe8fbe3bb04988d212f3bd9db62, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1694328209731368945, guid: b21dbbe8fbe3bb04988d212f3bd9db62, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1364348611}
     - target: {fileID: 5872474409320315158, guid: b21dbbe8fbe3bb04988d212f3bd9db62, type: 3}
       propertyPath: m_Pivot.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5872474409320315158, guid: b21dbbe8fbe3bb04988d212f3bd9db62, type: 3}
       propertyPath: m_Pivot.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5872474409320315158, guid: b21dbbe8fbe3bb04988d212f3bd9db62, type: 3}
       propertyPath: m_AnchorMax.x
@@ -382,11 +378,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5872474409320315158, guid: b21dbbe8fbe3bb04988d212f3bd9db62, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 1104.0001
       objectReference: {fileID: 0}
     - target: {fileID: 5872474409320315158, guid: b21dbbe8fbe3bb04988d212f3bd9db62, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 518
       objectReference: {fileID: 0}
     - target: {fileID: 5872474409320315158, guid: b21dbbe8fbe3bb04988d212f3bd9db62, type: 3}
       propertyPath: m_LocalPosition.x
@@ -398,7 +394,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5872474409320315158, guid: b21dbbe8fbe3bb04988d212f3bd9db62, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 5872474409320315158, guid: b21dbbe8fbe3bb04988d212f3bd9db62, type: 3}
       propertyPath: m_LocalRotation.w
@@ -725,10 +721,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: IcecreamStand
       objectReference: {fileID: 0}
-    - target: {fileID: 7006891460373868679, guid: 138bfb3cd75b8d348a1c225c52ef87eb, type: 3}
-      propertyPath: capacity
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -746,10 +738,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: EventManager
       objectReference: {fileID: 0}
-    - target: {fileID: 5671087343922645859, guid: b11da65b34fc7f44ca065b3593625f83, type: 3}
-      propertyPath: npcDeath
-      value: 
-      objectReference: {fileID: 2952373952645530122, guid: 3c476efcab2426c4c998d2ffa8f3f4ef, type: 3}
     - target: {fileID: 6366510063155448411, guid: b11da65b34fc7f44ca065b3593625f83, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -842,18 +830,6 @@ PrefabInstance:
     - target: {fileID: 1058155940150424448, guid: 1b062def2e6138949a56505e596cc894, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2909715838717521741, guid: 1b062def2e6138949a56505e596cc894, type: 3}
-      propertyPath: m_SortingLayer
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2909715838717521741, guid: 1b062def2e6138949a56505e596cc894, type: 3}
-      propertyPath: m_SortingOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2909715838717521741, guid: 1b062def2e6138949a56505e596cc894, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 1811817089
       objectReference: {fileID: 0}
     - target: {fileID: 5940218358849483296, guid: 1b062def2e6138949a56505e596cc894, type: 3}
       propertyPath: m_Name
