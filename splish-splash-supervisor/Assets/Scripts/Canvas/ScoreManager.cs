@@ -12,7 +12,7 @@ public class ScoreManager : MonoBehaviour
     public int initialScore = 100;
     public float score;
     public string endingName = "ending";
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,8 +26,17 @@ public class ScoreManager : MonoBehaviour
 
     void Update()
     {
-        score = (npcManager.GetSatisfaction() / npcManager.GetStartingSatisfaction()) * 100;
-        scoreText.text = score.ToString("F2");
+        Debug.Log("------ start: " + npcManager.GetStartingSatisfaction() + "cur: " + npcManager.GetSatisfaction());
+        score = npcManager.GetSatisfaction() / npcManager.GetStartingSatisfaction() * 100;
+        int s = (int)score;
+        scoreText.text = s.ToString();
+        if (s <= 0)
+        {
+            SceneManager.LoadScene(endingName);
+        }
+    }
+    public void DeathPenality()
+    {
     }
 
     /*
@@ -54,5 +63,5 @@ public class ScoreManager : MonoBehaviour
         scoreText.text = score.ToString();
     }
     */
-    
+
 }

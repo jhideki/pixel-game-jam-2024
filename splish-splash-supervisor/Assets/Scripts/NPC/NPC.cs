@@ -185,7 +185,7 @@ public class NPC : MonoBehaviour
         //deal 2 damage every 5 seconds
         while (status == NPCStatus.IcreamLine)
         {
-            npcManager.DealSatisfactionDamage(2f, this);
+            npcManager.DealSatisfactionDamage(10f, this);
             yield return new WaitForSeconds(5f);
         }
     }

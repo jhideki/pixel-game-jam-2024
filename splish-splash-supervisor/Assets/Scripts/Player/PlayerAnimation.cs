@@ -96,7 +96,7 @@ public class PlayerAnimation : MonoBehaviour
         if (collider.gameObject.tag == "Pool" || collider.gameObject.tag == "Hottub")
         {
             overlay.SetInWater(false);
-            waterOverlay.SetInWater(true);
+            waterOverlay.SetInWater(false);
         }
     }
 

@@ -859,6 +859,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 465077081754668518, guid: b11da65b34fc7f44ca065b3593625f83, type: 3}
+      propertyPath: spawnDelay
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 465077081754668518, guid: b11da65b34fc7f44ca065b3593625f83, type: 3}
+      propertyPath: icecreamStandDelay
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4999760888762947282, guid: b11da65b34fc7f44ca065b3593625f83, type: 3}
       propertyPath: m_Name
       value: EventManager
@@ -1030,6 +1038,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 228309423220616939, guid: 5e4b701a0e4faf04abcf4d0b73845e8c, type: 3}
+      propertyPath: m_Volume
+      value: 0.049
+      objectReference: {fileID: 0}
     - target: {fileID: 4200238039161546605, guid: 5e4b701a0e4faf04abcf4d0b73845e8c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.65263414

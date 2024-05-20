@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Unity.VisualScripting;
 using System;
+using UnityEngine.SocialPlatforms.Impl;
 
 //EventManager class used to spawn events keep track of active events
 public class EventManager : MonoBehaviour
@@ -11,6 +12,7 @@ public class EventManager : MonoBehaviour
     public GameObject npcDeath;
     public GameObject eventPrefab;
     public NPCManager npcManager;
+    public GameObject eventManager;
     public List<GameObject> activeEvents = new List<GameObject>();
     public EventData eventData;
     private void Awake()
@@ -166,7 +168,9 @@ public class EventManager : MonoBehaviour
         if (npc.GetStatus() == NPCStatus.Dead)
         {
             GameObject death = Instantiate(npcDeath, npc.transform.position, Quaternion.identity);
+            npcManager.DealSatisfactionDamage(100f, npc);
             npcManager.RemoveNPC(npc.gameObject);
+            npcManager.DeathPenalty();
         }
         else if (npc.GetStatus() != NPCStatus.Travelling)
         {

@@ -16,7 +16,7 @@ public class NPCManager : MonoBehaviour
 
 
     public Vector3 spawnLocation = new Vector3(12, -8, 0); // Fixed spawn location
-    public float spawnDelay = 100f; // Delay time in seconds between spawns
+    public float spawnDelay = 1f; // Delay time in seconds between spawns
     private GameObject icecreamStand;
     private NPCLine icecreamLine;
     public float icecreamStandDelay = 5f;
@@ -29,9 +29,19 @@ public class NPCManager : MonoBehaviour
             GameObject nPCInsatnce = Instantiate(npcPrefab, spawnLocation, Quaternion.identity);
             NPC npc = nPCInsatnce.GetComponent<NPC>();
             npc.InitializeNPC();
+            if (nPCs.Count > 0)
+            {
+                float ratio = currentSatisfaction / startingSatisfaction;
+                Debug.Log(ratio);
+                startingSatisfaction += ((npc.GetSatisfaction() + currentSatisfaction) / ratio) - startingSatisfaction;
+                currentSatisfaction += npc.GetSatisfaction();
+            }
+            else
+            {
+                currentSatisfaction += npc.GetSatisfaction();
+                startingSatisfaction += npc.GetSatisfaction();
+            }
 
-            startingSatisfaction += npc.GetSatisfaction();
-            currentSatisfaction += npc.GetSatisfaction();
             nPCs.Add(nPCInsatnce);
 
             yield return new WaitForSeconds(spawnDelay);
@@ -44,6 +54,7 @@ public class NPCManager : MonoBehaviour
         icecreamLine = icecreamStand.GetComponent<NPCLine>();
         StartCoroutine(SendToIceCreamStand());
     }
+
 
     IEnumerator SendToIceCreamStand()
     {
@@ -112,6 +123,12 @@ public class NPCManager : MonoBehaviour
     public void DealSatisfactionDamage(float amount, NPC npc)
     {
         npc.LowerSatisfaction(amount);
+        currentSatisfaction -= amount;
+    }
+
+    public void DeathPenalty()
+    {
+        float amount = currentSatisfaction * 0.25f;
         currentSatisfaction -= amount;
     }
 
