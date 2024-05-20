@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3393e258fd326b44e830c30d07bc2deb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  capacity: 6
+  capacity: 5
   direction: 2
 --- !u!212 &4041069017097858688
 SpriteRenderer:

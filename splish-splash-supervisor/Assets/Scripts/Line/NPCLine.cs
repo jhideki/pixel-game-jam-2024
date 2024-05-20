@@ -8,7 +8,7 @@ public class NPCLine : MonoBehaviour
     private LinkedList<GameObject> deque = new LinkedList<GameObject>();
     private Vector2Int nextLocation;
     private Vector2Int startLocation;
-    private int length;
+    private int length = 0;
     public int capacity;
     public Direction direction;
     void Start()
@@ -31,7 +31,8 @@ public class NPCLine : MonoBehaviour
 
     public bool IsFull()
     {
-        return capacity >= length;
+        Debug.Log("--------" + capacity + " ---------" + length);
+        return capacity == length;
     }
 
     public void DequeueLine()

@@ -12,6 +12,7 @@ public class PlayerAnimation : MonoBehaviour
     public List<Sprite> nIdleSprites;
 
     private swimOverlay overlay;
+    private WaterOverlay waterOverlay;
     private List<Sprite> selectedSprites;
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -38,6 +39,7 @@ public class PlayerAnimation : MonoBehaviour
         animator = GetComponent<Animator>();
         animator.enabled = false;
         overlay = transform.Find("SwimOverlay").GetComponent<swimOverlay>();
+        waterOverlay = transform.Find("WaterOverlay").GetComponent<WaterOverlay>();
     }
 
     // Update is called once per frame
@@ -85,6 +87,7 @@ public class PlayerAnimation : MonoBehaviour
         if (collider.gameObject.tag == "Pool" || collider.gameObject.tag == "Hottub")
         {
             overlay.SetInWater(true);
+            waterOverlay.SetInWater(true);
         }
     }
 
@@ -93,6 +96,7 @@ public class PlayerAnimation : MonoBehaviour
         if (collider.gameObject.tag == "Pool" || collider.gameObject.tag == "Hottub")
         {
             overlay.SetInWater(false);
+            waterOverlay.SetInWater(true);
         }
     }
 
