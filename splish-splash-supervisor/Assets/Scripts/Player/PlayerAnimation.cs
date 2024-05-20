@@ -11,6 +11,7 @@ public class PlayerAnimation : MonoBehaviour
     public List<Sprite> eIdleSprites;
     public List<Sprite> nIdleSprites;
 
+    private swimOverlay overlay;
     private List<Sprite> selectedSprites;
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -23,6 +24,7 @@ public class PlayerAnimation : MonoBehaviour
     public float animationBuffer = 2.0f;
     private float appearStartTime;
     public bool isTimingAppear;
+    private Animator animator;
 
     void Start()
     {
@@ -33,6 +35,9 @@ public class PlayerAnimation : MonoBehaviour
         anim.enabled = false;
         playingAnimation = false;
         isTimingAppear = false;
+        animator = GetComponent<Animator>();
+        animator.enabled = false;
+        overlay = transform.Find("SwimOverlay").GetComponent<swimOverlay>();
     }
 
     // Update is called once per frame
@@ -43,6 +48,11 @@ public class PlayerAnimation : MonoBehaviour
             anim.enabled = false;
             playingAnimation = false;
             isTimingAppear = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StartCoroutine(Whistle());
         }
 
 
@@ -69,6 +79,30 @@ public class PlayerAnimation : MonoBehaviour
 
         spriteRenderer.sprite = selectedSprites[frame];
     }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.gameObject.tag == "Pool" || collider.gameObject.tag == "Hottub")
+        {
+            overlay.SetInWater(true);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D collider)
+    {
+        if (collider.gameObject.tag == "Pool" || collider.gameObject.tag == "Hottub")
+        {
+            overlay.SetInWater(false);
+        }
+    }
+
+    IEnumerator Whistle()
+    {
+        animator.enabled = true;
+        yield return new WaitForSeconds(1.2f);
+        animator.enabled = false;
+    }
+
     void SetSprite()
     {
         if (Mathf.Abs(rb.velocity.x) > Mathf.Abs(rb.velocity.y))
