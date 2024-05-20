@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour
         IEvent e = eventObject.GetEvent();
         if (e.isActive)
         {
-            if (e.Type == EventType.Drowning)
+            if (e.Type == EventType.Drowning && !miniGameController.IsRunning())
             {
                 // Run minigame
                 miniGameController.StartMiniGame(e);

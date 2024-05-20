@@ -30,6 +30,7 @@ public class NPC : MonoBehaviour
     private Rigidbody2D rb;
     private Queue<Vector3> pathQueue = new Queue<Vector3>();
     private Vector3 hotTubPosition;
+    private Vector2Int icecreamPosition;
 
     private static List<Vector3> hottubCoordinates = new List<Vector3>
     {
@@ -425,6 +426,14 @@ public class NPC : MonoBehaviour
     public float CalculateSatisfactionPercentage()
     {
         return (float)satisfaction / (float)startingSatisfaction;
+    }
+    public void SetIcecreamPosition(Vector2Int position)
+    {
+        icecreamPosition = position;
+    }
+    public Vector2Int GetIcecreamPosition()
+    {
+        return icecreamPosition;
     }
 
 }

@@ -46,11 +46,11 @@ public class NPCLine : MonoBehaviour
 
             if (direction == Direction.West)
             {
-                n.SetNewTargetLocationCoords(new Vector2Int((int)n.transform.position.x - 1, (int)n.transform.position.y), Location.IcecreamStand);
+                n.SetNewTargetLocationCoords(new Vector2Int(n.GetIcecreamPosition().x - 1, n.GetIcecreamPosition().y), Location.IcecreamStand);
             }
             else
             {
-                n.SetNewTargetLocationCoords(new Vector2Int((int)n.transform.position.x + 1, (int)n.transform.position.y), Location.IcecreamStand);
+                n.SetNewTargetLocationCoords(new Vector2Int(n.GetIcecreamPosition().x + 1, n.GetIcecreamPosition().y), Location.IcecreamStand);
             }
         }
         if (direction == Direction.West)

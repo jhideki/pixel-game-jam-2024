@@ -10,6 +10,8 @@ public class swimOverlay : MonoBehaviour
 
     private NPC npc;
 
+    private bool inWater;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +26,7 @@ public class swimOverlay : MonoBehaviour
         int frame = (int)(Time.time * frameRate % 5);
         spriteRenderer.sprite = swimSprites[frame];
 
-        if (npc.GetStatus() == NPCStatus.Swimming || npc.GetStatus() == NPCStatus.Hottub)
+        if (inWater)
         {
             spriteRenderer.enabled = true;
         }
@@ -32,5 +34,10 @@ public class swimOverlay : MonoBehaviour
         {
             spriteRenderer.enabled = false;
         }
+
+    }
+    public void SetInWater(bool val)
+    {
+        inWater = val;
     }
 }

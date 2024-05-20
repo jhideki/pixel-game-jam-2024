@@ -8,6 +8,7 @@ using System;
 public class EventManager : MonoBehaviour
 {
     public static EventManager instance;
+    public GameObject npcDeath;
     public GameObject eventPrefab;
     public NPCManager npcManager;
     public List<GameObject> activeEvents = new List<GameObject>();
@@ -45,7 +46,7 @@ public class EventManager : MonoBehaviour
                 npc.SetNewTargetLocation(Location.Hottub);
                 break;
             case EventType.OverHeating:
-                npc.SetNewTargetLocation(Location.Hottub);
+                npc.SetNewTargetLocation(Location.Pool);
                 break;
             case EventType.Hysteria:
                 npc.SetNewTargetLocation(Location.Hottub);
@@ -97,6 +98,7 @@ public class EventManager : MonoBehaviour
         Destroy(eventObject);
         if (npc.GetStatus() == NPCStatus.Dead)
         {
+            Instantiate(npcDeath, npc.transform.position, Quaternion.identity);
             npcManager.RemoveNPC(npc.gameObject);
         }
         else if (npc.GetStatus() != NPCStatus.Travelling)

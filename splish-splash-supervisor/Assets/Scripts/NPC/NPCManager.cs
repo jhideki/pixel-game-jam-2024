@@ -54,6 +54,7 @@ public class NPCManager : MonoBehaviour
             {
                 icecreamLine.EnqueueLine(npc.gameObject);
                 npc.SetNewTargetLocationCoords(icecreamLine.GetNextLocation(), Location.IcecreamStand);
+                npc.SetIcecreamPosition(icecreamLine.GetNextLocation());
 
             }
             yield return new WaitForSeconds(icecreamStandDelay);

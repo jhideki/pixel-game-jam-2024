@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ae48813f2a015047ac7de185be6a284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  npcDeath: {fileID: 0}
   eventPrefab: {fileID: 4668592122272107493, guid: 19d7c01dac954c7498621521a7bfe0c8, type: 3}
   npcManager: {fileID: 465077081754668518}
   activeEvents: []
@@ -101,4 +102,5 @@ MonoBehaviour:
   - {fileID: 1271306928054841961, guid: 13f2101aa98d53a45acadf17eb8a26c3, type: 3}
   eventData: {fileID: 11400000, guid: 794d140ec0060d249ac1c6c089f77c91, type: 2}
   spawnLocation: {x: 12, y: -8, z: 0}
-  spawnDelay: 4
+  spawnDelay: 15
+  icecreamStandDelay: 5
