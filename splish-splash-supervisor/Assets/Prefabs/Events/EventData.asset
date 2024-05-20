@@ -26,7 +26,7 @@ MonoBehaviour:
   pissingDamageRate: 10
   pissingDuration: 10
   pissingSize: 1
-  drowningProbability: 10
+  drowningProbability: 80
   drowningSatisfactionDropRate: 1
   drowningDamageRate: 10
   drowningDuration: 3
@@ -42,7 +42,7 @@ MonoBehaviour:
   hysteriaDamageRate: 10
   hysteriaDuration: 10
   hysteriaSize: 1
-  runningProbability: 100
+  runningProbability: 80
   runningSatisfactionDropRate: 1
   runningDamageRate: 1
   runningDuration: 20

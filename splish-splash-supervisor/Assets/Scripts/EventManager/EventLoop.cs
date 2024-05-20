@@ -25,7 +25,7 @@ public class EventLoop : MonoBehaviour
         timer.StartTimer();
 
         //Probabilty dictionary
-        //eventProbabilitesDict.Add(EventType.Drowning, eventData.drowningProbability);
+        eventProbabilitesDict.Add(EventType.Drowning, eventData.drowningProbability);
         eventProbabilitesDict.Add(EventType.Running, eventData.runningProbability);
 
         //Will remove this block later (Will be replaced by SpawnNPCs)

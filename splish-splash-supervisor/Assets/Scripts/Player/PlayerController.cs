@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
             EndEvent();
         }
 
-        if (isAtIcecreamStand && Input.GetKeyDown(KeyCode.E))
+        if (isAtIcecreamStand && Input.GetKeyDown(KeyCode.Space))
         {
             icecreamLine.DequeueLine();
         }
@@ -130,14 +130,13 @@ public class PlayerController : MonoBehaviour
             if (e.Type == EventType.Drowning && !miniGameController.IsRunning())
             {
                 // Run minigame
-                miniGameController.StartMiniGame(e);
-                eventManager.EndEvent(currentEvent);
+                miniGameController.StartMiniGame(currentEvent);
             }
             else if (e.Type == EventType.OverHeating)
             {
                 eventManager.EndEvent(currentEvent);
             }
-            else
+            else if (e.Type != EventType.Drowning)
             {
                 eventManager.EndEvent(currentEvent);
             }
