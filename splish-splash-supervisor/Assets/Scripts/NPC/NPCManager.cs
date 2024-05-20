@@ -98,6 +98,16 @@ public class NPCManager : MonoBehaviour
         }
     }
 
+    public float GetSatisfaction()
+    {
+        return currentSatisfaction;
+    }
+
+    public float GetStartingSatisfaction()
+    {
+        return startingSatisfaction;
+    }
+
     //TDO - add a method to deal damage to all NPCs
     public void DealSatisfactionDamage(float amount, NPC npc)
     {

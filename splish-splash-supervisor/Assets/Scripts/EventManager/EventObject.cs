@@ -8,7 +8,12 @@ public class EventObject : MonoBehaviour
     private IEvent e;
     private BoxCollider2D boxCollider2D;
     private Transform transfrom;
-
+    private Animator animator;
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+        animator.enabled = true;
+    }
     public void SetEvent(IEvent e)
     {
 
