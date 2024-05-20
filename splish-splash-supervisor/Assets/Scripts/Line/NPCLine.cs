@@ -9,7 +9,7 @@ public class NPCLine : MonoBehaviour
     private Vector2Int nextLocation;
     private Vector2Int startLocation;
     private int length;
-    public int capacity = 5;
+    public int capacity;
     public Direction direction;
     void Start()
     {

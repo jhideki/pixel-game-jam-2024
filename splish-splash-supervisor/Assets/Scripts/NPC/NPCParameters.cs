@@ -13,4 +13,5 @@ public class NPCParameters : ScriptableObject
     public float changeDirectionIntervalMin;
     public float hottubVelocity;
     public float moveSpeed;
+    public float runVelocity;
 }
