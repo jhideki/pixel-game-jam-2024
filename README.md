@@ -3,6 +3,7 @@
 # Play as an Underqualified Lifeguard!
 
 Try to last as long as you can ;)
+(Play the game here)[https://johnnyfriend.itch.io/splish-splash-supervisor]
 
 ## Controls:
 
